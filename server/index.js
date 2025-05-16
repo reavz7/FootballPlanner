@@ -7,6 +7,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+//todo reszta routow
 app.use("/users", require("./routes/Users"));
 app.use("/matches", require("./routes/Matches"));
 
