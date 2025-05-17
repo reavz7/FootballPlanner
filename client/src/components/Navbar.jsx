@@ -28,8 +28,8 @@ export default function Navbar() {
 
   return (
     <header
-      className={`w-full fixed top-0 z-50 transition-all duration-300  hover:bg-violet-400 ${
-        scrolled ? "bg-white shadow-md" : "bg-violet-300/90"
+      className={`w-full fixed top-0 z-50 transition-all duration-300 ${
+        scrolled ? "bg-white shadow-md" : "bg-violet-500"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -40,7 +40,7 @@ export default function Navbar() {
               <span className="text-2xl font-bold text-black">
                 FootballPlanner
               </span>
-              <span className="text-xs text-gray-500 ml-1 hidden sm:block">
+              <span className="text-xs text-gray-400 ml-1 hidden sm:block">
                 zagrajmy, razem.
               </span>
             </Link>
@@ -109,8 +109,8 @@ export default function Navbar() {
               className="ml-4 whitespace-nowrap text-gray-500 hover:text-gray-900"
             >
               <div className="flex justify-center items-center gap-1.5">
-                <p>Profil</p>
-                <User size={20} />
+                <p className="text-gray-800">Profil</p>
+                <User size={20} className="text-gray-800" />
               </div>
             </Link>
           </div>

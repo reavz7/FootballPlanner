@@ -2,20 +2,19 @@ import { useState, useEffect, useRef } from "react";
 
 export default function AnimatedHeroSection() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const gridRef = useRef(null);
+  const containerRef = useRef(null);
   const [grid, setGrid] = useState([]);
-  const gridSize = 15; // Number of squares in each dimension
-  const activationRadius = 3; // How many squares away to light up
+  const gridSize = 15;
+  const activationRadius = 5;
 
-  // Initialize grid on component mount
   useEffect(() => {
     const newGrid = [];
-    for (let i = 0; i < gridSize; i++) {
-      for (let j = 0; j < gridSize; j++) {
+    for (let y = 0; y < gridSize; y++) {
+      for (let x = 0; x < gridSize; x++) {
         newGrid.push({
-          id: `${i}-${j}`,
-          x: i,
-          y: j,
+          id: `${x}-${y}`,
+          x: x,
+          y: y,
           active: false,
           opacity: 0,
         });
@@ -24,42 +23,41 @@ export default function AnimatedHeroSection() {
     setGrid(newGrid);
   }, []);
 
-  // Handle mouse movement
   useEffect(() => {
     const handleMouseMove = (e) => {
-      if (!gridRef.current) return;
+      if (!containerRef.current) return;
 
-      const rect = gridRef.current.getBoundingClientRect();
+      const rect = containerRef.current.getBoundingClientRect();
+
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
 
-      // Convert to grid coordinates
-      const gridX = Math.floor((x / rect.width) * gridSize);
-      const gridY = Math.floor((y / rect.height) * gridSize);
+      const gridX = (x / rect.width) * gridSize;
+      const gridY = (y / rect.height) * gridSize;
 
       setMousePosition({ x: gridX, y: gridY });
 
-      // Update grid cells based on mouse position
       setGrid((prevGrid) =>
         prevGrid.map((cell) => {
           const distance = Math.sqrt(
             Math.pow(cell.x - gridX, 2) + Math.pow(cell.y - gridY, 2)
           );
 
-          // Light up cells close to the mouse
+          // Zaświecenie komórek blisko myszy - tylko komórki bardzo blisko kursora
           if (distance < activationRadius) {
             return {
               ...cell,
               active: true,
-              opacity: 1 - distance / activationRadius,
+              // Intensywniejszy efekt - większy kontrast dla bliższych komórek
+              opacity: Math.pow(1 - distance / activationRadius, 2),
             };
           }
 
-          // Fade out other cells
+          // Szybsze wygaszanie pozostałych komórek
           return {
             ...cell,
             active: false,
-            opacity: cell.opacity > 0 ? cell.opacity - 0.1 : 0,
+            opacity: Math.max(0, cell.opacity - 0.2),
           };
         })
       );
@@ -72,12 +70,15 @@ export default function AnimatedHeroSection() {
   }, []);
 
   return (
-    <div className="relative w-full h-screen bg-black overflow-hidden">
-      {/* Grid overlay */}
+    <div
+      ref={containerRef}
+      className="relative w-full h-screen bg-black overflow-hidden"
+    >
+      {/* Siatka */}
       <div
-        ref={gridRef}
-        className="absolute inset-0 grid grid-cols-15 grid-rows-15"
+        className="absolute inset-0"
         style={{
+          display: "grid",
           gridTemplateColumns: `repeat(${gridSize}, 1fr)`,
           gridTemplateRows: `repeat(${gridSize}, 1fr)`,
         }}
@@ -87,16 +88,14 @@ export default function AnimatedHeroSection() {
             key={cell.id}
             className="border border-gray-900"
             style={{
-              backgroundColor: cell.active
-                ? "rgba(99, 102, 241, " + cell.opacity + ")"
-                : "transparent",
-              transition: "background-color 0.3s ease-out",
+              backgroundColor: `rgba(99, 102, 241, ${cell.opacity})`,
+              transition: "background-color 0.15s linear",
             }}
           />
         ))}
       </div>
 
-      {/* Hero Content */}
+      {/* Zawartość hero */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-white p-4">
         <h1 className="text-6xl font-bold mb-4 text-center">DOŁĄCZ DO GRY.</h1>
         <p className="text-xl text-center max-w-2xl mb-8">
@@ -104,7 +103,7 @@ export default function AnimatedHeroSection() {
           quisquam nemo excepturi officia necessitatibus veritatis enim ipsam!
           Laudantium, reiciendis officia!
         </p>
-        <button className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded transition-colors">
+        <button className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded transition-colors cursor-pointer">
           Wyszukaj mecz
         </button>
       </div>
