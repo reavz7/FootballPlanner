@@ -28,8 +28,8 @@ export default function Navbar() {
 
   return (
     <header
-      className={`w-full fixed top-0 z-50 transition-all duration-300  hover:bg-green-200 ${
-        scrolled ? "bg-white shadow-md" : "bg-white/90"
+      className={`w-full fixed top-0 z-50 transition-all duration-300  hover:bg-violet-400 ${
+        scrolled ? "bg-white shadow-md" : "bg-violet-300/90"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -65,7 +65,7 @@ export default function Navbar() {
               className={`text-base font-medium ${
                 isActive("/")
                   ? "text-black border-b-2 border-black"
-                  : "text-gray-500 hover:text-gray-900"
+                  : "text-gray-800 hover:text-gray-900"
               }`}
             >
               Strona główna
@@ -75,7 +75,7 @@ export default function Navbar() {
               className={`text-base font-medium ${
                 isActive("/create-match")
                   ? "text-black border-b-2 border-black"
-                  : "text-gray-500 hover:text-gray-900"
+                  : "text-gray-800 hover:text-gray-900"
               }`}
             >
               Stwórz mecz
@@ -85,7 +85,7 @@ export default function Navbar() {
               className={`text-base font-medium ${
                 isActive("/match-history")
                   ? "text-black border-b-2 border-black"
-                  : "text-gray-500 hover:text-gray-900"
+                  : "text-gray-800 hover:text-gray-900"
               }`}
             >
               Historia meczy
@@ -95,7 +95,7 @@ export default function Navbar() {
               className={`text-base font-medium ${
                 isActive("/search-match")
                   ? "text-black border-b-2 border-black"
-                  : "text-gray-500 hover:text-gray-900"
+                  : "text-gray-800 hover:text-gray-900"
               }`}
             >
               Wyszukaj mecz
