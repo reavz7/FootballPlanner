@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ShoppingBag, User, Search } from "lucide-react";
+import ButtonSecondary from "./ButtonSecondary";
+import ButtonPrimary from "./ButtonPrimary";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -103,7 +105,7 @@ export default function Navbar() {
           </nav>
 
           {/* Right side icons */}
-          <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
+          <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0 gap-2">
             <Link
               to="/profile"
               className="ml-4 whitespace-nowrap text-gray-500 hover:text-gray-900"
@@ -164,6 +166,7 @@ export default function Navbar() {
           >
             Wyszukaj mecz
           </Link>
+          
           <Link
             to="/profile"
             className={`block px-3 py-2 rounded-md text-base font-medium ${
@@ -175,6 +178,7 @@ export default function Navbar() {
           >
             Profil
           </Link>
+
         </div>
       </div>
     </header>

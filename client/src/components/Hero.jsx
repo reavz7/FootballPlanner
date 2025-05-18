@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-
+import ButtonPrimary from "./ButtonPrimary";
+import ButtonSecondary from "./ButtonSecondary";
 export default function AnimatedHeroSection() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const containerRef = useRef(null);
@@ -43,17 +44,14 @@ export default function AnimatedHeroSection() {
             Math.pow(cell.x - gridX, 2) + Math.pow(cell.y - gridY, 2)
           );
 
-          // Zaświecenie komórek blisko myszy - tylko komórki bardzo blisko kursora
           if (distance < activationRadius) {
             return {
               ...cell,
               active: true,
-              // Intensywniejszy efekt - większy kontrast dla bliższych komórek
               opacity: Math.pow(1 - distance / activationRadius, 2),
             };
           }
 
-          // Szybsze wygaszanie pozostałych komórek
           return {
             ...cell,
             active: false,
@@ -74,7 +72,6 @@ export default function AnimatedHeroSection() {
       ref={containerRef}
       className="relative w-full h-screen bg-black overflow-hidden"
     >
-      {/* Siatka */}
       <div
         className="absolute inset-0"
         style={{
@@ -95,17 +92,18 @@ export default function AnimatedHeroSection() {
         ))}
       </div>
 
-      {/* Zawartość hero */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-white p-4">
         <h1 className="text-6xl font-bold mb-4 text-center">DOŁĄCZ DO GRY.</h1>
         <p className="text-xl text-center max-w-2xl mb-8">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore
-          quisquam nemo excepturi officia necessitatibus veritatis enim ipsam!
-          Laudantium, reiciendis officia!
+          Chcesz zagrać mecz w piłkę nożną ale nie masz z kim?
+          <br />
+          Nie ma problemu, dołącz do istniejącego lub ogłoś własny i ciesz się
+          grą.
         </p>
-        <button className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded transition-colors cursor-pointer">
-          Wyszukaj mecz
-        </button>
+        <div className="flex gap-5">
+          <ButtonPrimary text={"Wyszukaj mecz"} />
+          <ButtonSecondary text={"Stwórz swój mecz"} />
+        </div>
       </div>
     </div>
   );
