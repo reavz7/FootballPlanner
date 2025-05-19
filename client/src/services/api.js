@@ -49,3 +49,35 @@ export async function getCurrentUser(token) {
     }
   }
 }
+
+// Pobierz przyszłe mecze
+export async function getUpcomingMatches() {
+  try {
+    const response = await axios.get(`${API_URL}/matches`);
+    return response.data; // zwraca listę meczów z przyszłości
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data.message || 'Błąd pobierania meczów');
+    } else {
+      throw new Error('Brak połączenia z serwerem');
+    }
+  }
+}
+
+// Stwórz nowy mecz
+export async function createMatch(data, token) {
+  try {
+    const response = await axios.post(`${API_URL}/matches`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data; // zwraca utworzony mecz
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data.message || 'Błąd tworzenia meczu');
+    } else {
+      throw new Error('Brak połączenia z serwerem');
+    }
+  }
+}

@@ -40,14 +40,10 @@ export default function AuthForm() {
           password: formData.password
         });
       }
-
-      // Zapisanie tokena w localStorage
       localStorage.setItem('authToken', response.token);
       
-      // Zapisanie danych użytkownika
       localStorage.setItem('user', JSON.stringify(response.user));
       
-      // Przekierowanie do strony głównej
       navigate('/');
     } catch (error) {
       setError(error.message);

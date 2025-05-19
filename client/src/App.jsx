@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import AuthForm from "./pages/AuthForm";
 import "./App.css";
+import Profile from "./pages/Profile";
 
 // Komponent zabezpieczający route
 function PrivateRoute({ children }) {
@@ -17,6 +18,14 @@ function App() {
           element={
             <PrivateRoute>
               <Home />
+            </PrivateRoute>
+          }
+      />
+       <Route
+          path="/profile"
+          element={
+            <PrivateRoute>
+              <Profile/>
             </PrivateRoute>
           }
         />
