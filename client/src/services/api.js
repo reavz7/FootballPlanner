@@ -40,7 +40,7 @@ export async function getCurrentUser(token) {
         Authorization: `Bearer ${token}`
       }
     });
-    return response.data; // dane użytkownika bez hasła
+    return response.data; 
   } catch (error) {
     if (error.response) {
       throw new Error(error.response.data.message || 'Błąd pobierania użytkownika');
@@ -54,7 +54,7 @@ export async function getCurrentUser(token) {
 export async function getUpcomingMatches() {
   try {
     const response = await axios.get(`${API_URL}/matches`);
-    return response.data; // zwraca listę meczów z przyszłości
+    return response.data; 
   } catch (error) {
     if (error.response) {
       throw new Error(error.response.data.message || 'Błąd pobierania meczów');
@@ -72,7 +72,7 @@ export async function createMatch(data, token) {
         Authorization: `Bearer ${token}`
       }
     });
-    return response.data; // zwraca utworzony mecz
+    return response.data; 
   } catch (error) {
     if (error.response) {
       throw new Error(error.response.data.message || 'Błąd tworzenia meczu');

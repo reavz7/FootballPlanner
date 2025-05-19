@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import AuthForm from "./pages/AuthForm";
 import "./App.css";
 import Profile from "./pages/Profile";
+import CreateMatch from "./pages/CreateMatch";
 
 // Komponent zabezpieczający route
 function PrivateRoute({ children }) {
@@ -26,6 +27,14 @@ function App() {
           element={
             <PrivateRoute>
               <Profile/>
+            </PrivateRoute>
+          }
+      />
+      <Route
+          path="/create-match"
+          element={
+            <PrivateRoute>
+              <CreateMatch/>
             </PrivateRoute>
           }
         />
