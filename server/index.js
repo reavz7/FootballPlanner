@@ -1,13 +1,14 @@
 const express = require("express");
 const cors = require("cors");
 const db = require("./models");
-
+require('dotenv').config();
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-//todo reszta routow
+
+// Reszta routów
 app.use("/users", require("./routes/Users"));
 app.use("/matches", require("./routes/Matches"));
 

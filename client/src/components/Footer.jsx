@@ -26,7 +26,7 @@ const Footer = () => {
                 Kontakt
               </h3>
               <address className="not-italic text-white/90 text-sm flex flex-col gap-3 text-center md:text-left">
-                <p>Poland, Łódź, Kilińskiego 46 Street, 90-256</p>
+                <p>Polska, Łódź, Kilińskiego 1, 90-354</p>
                 <a
                   href="mailto:kontakt@footballplanner.pl"
                   className="hover:underline hover:text-yellow-300 transition-colors"
