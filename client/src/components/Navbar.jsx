@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, ShoppingBag, User, Search, LogOut } from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,6 +26,15 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
+    // Usunięcie tokena uwierzytelniania
+    localStorage.removeItem('authToken');
+    
+    // Usunięcie danych użytkownika
+    localStorage.removeItem('user');
+    
+    // Przekierowanie do strony logowania
+    navigate('/auth');
+    
     console.log("Wylogowano użytkownika");
   };
 
@@ -196,7 +206,7 @@ export default function Navbar() {
             }}
           >
             <div className="flex items-center gap-2">
-              <LogOut/>
+              <LogOut size={20}/>
               <span>Wyloguj</span>
             </div>
           </button>
