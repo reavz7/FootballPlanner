@@ -46,10 +46,6 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "userId",
       onDelete: "CASCADE",
     });
-    User.hasMany(models.TeamPlayer, {
-      foreignKey: "userId",
-      onDelete: "CASCADE",
-    });
   };
 
   return User;

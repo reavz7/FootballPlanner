@@ -1,103 +1,118 @@
-import React, { useRef, useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import ButtonPrimary from "../components/ButtonPrimary";
-import { createMatch } from "../services/api";
-import { useNavigate } from "react-router-dom";
-import SuccessAlert from "../components/SuccessAlert";
-import ErrorAlert from "../components/ErrorAlert";
+"use client"
+
+import { useRef, useEffect, useState } from "react"
+import Navbar from "../components/Navbar"
+import ButtonPrimary from "../components/ButtonPrimary"
+import { createMatch } from "../services/api"
+import { useNavigate } from "react-router-dom"
+import SuccessAlert from "../components/SuccessAlert"
+import ErrorAlert from "../components/ErrorAlert"
+import Footer from "../components/Footer"
 
 const CreateMatch = () => {
-  const navigate = useNavigate();
-  const calendarRef = useRef(null);
+  const navigate = useNavigate()
+  const calendarRef = useRef(null)
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     location: "",
-  });
-  const [selectedDate, setSelectedDate] = useState("");
-  const [selectedTime, setSelectedTime] = useState("12:00"); // domyślna godzina
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  })
+  const [selectedDate, setSelectedDate] = useState("")
+  const [selectedTime, setSelectedTime] = useState("12:00")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
+  const [isParticipant, setIsParticipant] = useState(false)
+  const [selectedPosition, setSelectedPosition] = useState("")
 
   useEffect(() => {
-    // Sprawdzenie, czy użytkownik jest zalogowany
-    const token = localStorage.getItem("authToken");
+    const token = localStorage.getItem("authToken")
     if (!token) {
-      setError("Musisz być zalogowany, aby utworzyć mecz!");
-      navigate("/login");
+      setError("Musisz być zalogowany, aby utworzyć mecz!")
+      navigate("/login")
     }
 
-    const calendar = calendarRef.current;
+    const calendar = calendarRef.current
 
-    if (!calendar) return;
+    if (!calendar) return
 
     const onDateChange = (e) => {
-      const date = e.target.value || e.detail; // dostosuj wg eventu
-      if (!date) return;
+      const date = e.target.value || e.detail // dostosuj wg eventu
+      if (!date) return
 
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
 
-      const selected = new Date(date);
-      selected.setHours(0, 0, 0, 0);
+      const selected = new Date(date)
+      selected.setHours(0, 0, 0, 0)
 
       if (selected < today) {
-        setError("Nie możesz wybrać przeszłej daty!");
-        calendar.value = "";
-        setSelectedDate("");
+        setError("Nie możesz wybrać przeszłej daty!")
+        calendar.value = ""
+        setSelectedDate("")
       } else {
-        setSelectedDate(date);
-        setError(""); // Wyczyść błędy po prawidłowym wyborze daty
+        setSelectedDate(date)
+        setError("") // Wyczyść błędy po prawidłowym wyborze daty
       }
-    };
+    }
 
-    calendar.addEventListener("change", onDateChange);
+    calendar.addEventListener("change", onDateChange)
 
     return () => {
-      calendar.removeEventListener("change", onDateChange);
-    };
-  }, [navigate]);
+      calendar.removeEventListener("change", onDateChange)
+    }
+  }, [navigate])
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setFormData({
       ...formData,
       [name]: value,
-    });
-  };
+    })
+  }
 
   const handleTimeChange = (e) => {
-    setSelectedTime(e.target.value);
-  };
+    setSelectedTime(e.target.value)
+  }
+
+  const handleParticipantChange = (e) => {
+    setIsParticipant(e.target.checked)
+    if (!e.target.checked) {
+      setSelectedPosition("")
+    }
+  }
+
+  const handlePositionChange = (e) => {
+    setSelectedPosition(e.target.value)
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setSuccess("");
+    e.preventDefault()
+    setError("")
+    setSuccess("")
 
     if (!selectedDate) {
-      setError("Wybierz datę meczu!");
-      return;
+      setError("Wybierz datę meczu!")
+      return
     }
 
     if (!formData.title || !formData.location) {
-      setError("Tytuł i lokalizacja są wymagane!");
-      return;
+      setError("Tytuł i lokalizacja są wymagane!")
+      return
     }
 
     // Łączenie daty i czasu w jeden obiekt Date lub string ISO
-    const dateTimeString = `${selectedDate}T${selectedTime}:00`; // np. "2025-05-19T18:30:00"
-    const matchDateTime = new Date(dateTimeString);
+    const dateTimeString = `${selectedDate}T${selectedTime}:00` // np. "2025-05-19T18:30:00"
+    const matchDateTime = new Date(dateTimeString)
 
     try {
-      setLoading(true);
-      const token = localStorage.getItem("authToken");
-      
+      setLoading(true)
+      const token = localStorage.getItem("authToken")
+
       if (!token) {
-        setError("Brak autoryzacji. Zaloguj się ponownie.");
-        navigate("/login");
-        return;
+        setError("Brak autoryzacji. Zaloguj się ponownie.")
+        navigate("/login")
+        return
       }
 
       const matchData = {
@@ -105,43 +120,41 @@ const CreateMatch = () => {
         description: formData.description,
         location: formData.location,
         date: matchDateTime.toISOString(),
-      };
+        isParticipant: isParticipant,
+        position: selectedPosition,
+      }
 
-      await createMatch(matchData, token);
-      
-      setSuccess("Mecz został pomyślnie utworzony!");
-      
+      await createMatch(matchData, token)
+
+      setSuccess("Mecz został pomyślnie utworzony!")
+
       // Resetuj formularz po udanym utworzeniu
       setFormData({
         title: "",
         description: "",
         location: "",
-      });
-      setSelectedDate("");
-      calendarRef.current.value = "";
-      
+      })
+      setSelectedDate("")
+      calendarRef.current.value = ""
+
       // Przekierowanie po krótkim opóźnieniu, żeby użytkownik zobaczył komunikat sukcesu
       setTimeout(() => {
-        navigate("/");
-      }, 2000);
+        navigate("/")
+      }, 2000)
     } catch (error) {
-      setError(error.message || "Wystąpił błąd podczas tworzenia meczu");
+      setError(error.message || "Wystąpił błąd podczas tworzenia meczu")
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <>
       <Navbar />
       <div className="pt-38 bg-black min-h-screen">
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-white text-4xl text-center uppercase font-medium mb-2">
-            Stwórz mecz, zacznij grać.
-          </h1>
-          <p className="text-white text-center italic tracking-widest mb-1.5">
-            Prosto i szybko.
-          </p>
+          <h1 className="text-white text-4xl text-center uppercase font-medium mb-2">Stwórz mecz, zacznij grać.</h1>
+          <p className="text-white text-center italic tracking-widest mb-1.5">Prosto i szybko.</p>
           <div className="flex justify-center">
             <div className="border-1 w-4xl border-white mb-4"></div>
           </div>
@@ -160,29 +173,29 @@ const CreateMatch = () => {
         )}
 
         <form className="flex flex-col items-center" onSubmit={handleSubmit}>
-          <div className="sm:grid sm:grid-cols-2 gap-12 w-full max-w-5xl mb-8 flex flex-col justify-center items-center">
-            <div className="flex flex-col items-end gap-7.5">
-              <input 
-                type="text" 
+          <div className="sm:grid sm:grid-cols-3 gap-12 w-full max-w-5xl mb-8 flex flex-col justify-center items-center sm:items-start">
+            <div className="flex flex-col items-end  gap-7.5">
+              <input
+                type="text"
                 name="title"
-                placeholder="Nazwa meczu" 
-                className="input" 
+                placeholder="Nazwa meczu"
+                className="input"
                 value={formData.title}
                 onChange={handleInputChange}
                 required
               />
-              <input 
-                type="text" 
+              <input
+                type="text"
                 name="location"
-                placeholder="Lokalizacja meczu" 
-                className="input" 
+                placeholder="Lokalizacja meczu"
+                className="input"
                 value={formData.location}
                 onChange={handleInputChange}
                 required
               />
-              <textarea 
+              <textarea
                 name="description"
-                className="textarea" 
+                className="textarea"
                 placeholder="Opis (opcjonalnie)"
                 value={formData.description}
                 onChange={handleInputChange}
@@ -221,20 +234,50 @@ const CreateMatch = () => {
                 onChange={handleTimeChange}
                 required
               />
+            
             </div>
+            <div>
+              <div className="form-control mt-4">
+                <label className="cursor-pointer label justify-start gap-2">
+                  <input
+                    type="checkbox"
+                    className="checkbox checkbox-primary"
+                    checked={isParticipant}
+                    onChange={handleParticipantChange}
+                  />
+                  <span className="label-text text-white">Chcę być także uczestnikiem meczu</span>
+                </label>
+              </div>
+
+              {isParticipant && (
+                <div className="mt-2 w-full">
+                  <select
+                    className="select select-bordered w-full"
+                    value={selectedPosition}
+                    onChange={handlePositionChange}
+                    required={isParticipant}
+                  >
+                    <option value="" disabled>
+                      Wybierz preferowaną pozycję
+                    </option>
+                    <option value="bramkarz">Bramkarz</option>
+                    <option value="obrona">Obrona</option>
+                    <option value="pomoc">Pomoc</option>
+                    <option value="atak">Atak</option>
+                  </select>
+                </div>
+              )}
+              </div>
           </div>
 
-          <div className="flex justify-center">
-            <ButtonPrimary 
-              type={"submit"} 
-              text={loading ? "Tworzenie..." : "Stwórz mecz"} 
-              disabled={loading}
-            />
+          <div className="flex justify-center mb-30   ">
+            <ButtonPrimary type={"submit"} text={loading ? "Tworzenie..." : "Stwórz mecz"} disabled={loading} />
           </div>
         </form>
       </div>
+      <Footer/>
     </>
-  );
-};
+  )
+}
 
-export default CreateMatch;
+export default CreateMatch

@@ -75,7 +75,7 @@ export async function createMatch(data, token) {
     return response.data; 
   } catch (error) {
     if (error.response) {
-      throw new Error(error.response.data.message || 'Błąd tworzenia meczu');
+      throw new Error(error.response.data.error || 'Błąd tworzenia meczu');
     } else {
       throw new Error('Brak połączenia z serwerem');
     }

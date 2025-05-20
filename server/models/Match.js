@@ -53,7 +53,6 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "matchId",
       onDelete: "CASCADE",
     });
-    Match.hasMany(models.Team, { foreignKey: "matchId", onDelete: "CASCADE" });
   };
 
   return Match;

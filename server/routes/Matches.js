@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Match } = require("../models");
+const { Match, Participant } = require("../models");
 const { Op } = require("sequelize");
 const verifyToken = require("../middleware/verifyToken");
 
@@ -25,11 +25,11 @@ router.get("/", verifyToken ,async (req, res) => {
   }
 });
 
-// POST /matches - tworzy nowy mecz
+// POST /matches - tworzy nowy mecz i ewentualnie dodaje uczestnika
 router.post("/", verifyToken, async (req, res) => {
   try {
-    const { title, description, location, date } = req.body;
-    const createdBy = req.user.id; // pobierz ID użytkownika z tokenu
+    const { title, description, location, date, isParticipant, position } = req.body;
+    const createdBy = req.user.id;
 
     if (!title || !location || !date) {
       return res.status(400).json({ error: "Brakuje wymaganych danych" });
@@ -43,8 +43,22 @@ router.post("/", verifyToken, async (req, res) => {
       createdBy,
     });
 
+    if (isParticipant) {
+      if (!position) {
+        return res.status(400).json({ error: "Pozycja jest wymagana, jeśli chcesz być uczestnikiem." });
+      }
+
+      // Upewnij się, że masz model Participant zaimportowany
+      await Participant.create({
+        matchId: newMatch.id,
+        userId: createdBy,
+        position,
+      });
+    }
+
     res.status(201).json(newMatch);
   } catch (error) {
+    console.error("Błąd tworzenia meczu:", error);
     res.status(500).json({
       error: "Błąd podczas tworzenia meczu",
       details: error.message,

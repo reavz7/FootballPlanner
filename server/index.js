@@ -22,9 +22,7 @@ const PORT = process.env.PORT || 5000;
     // Synchronizacja wszystkich modeli
     await db.User.sync({ alter: true });
     await db.Match.sync({ alter: true });
-    await db.Team.sync({ alter: true });
     await db.Participant.sync({ alter: true });
-    await db.TeamPlayer.sync({ alter: true });
 
     app.listen(PORT, () => {
       console.log(`Serwer działa na porcie ${PORT}`);
