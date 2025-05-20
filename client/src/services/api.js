@@ -114,3 +114,65 @@ export const cancelMatchParticipation = async (token, matchId) => {
     throw error;
   }
 };
+
+// Pobierz uczestników konkretnego meczu
+export async function getMatchParticipants(matchId, token) {
+  try {
+    const response = await axios.get(`${API_URL}/participants/match/${matchId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data; // lista uczestników
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data.error || 'Błąd pobierania uczestników');
+    } else {
+      throw new Error('Brak połączenia z serwerem');
+    }
+  }
+}
+
+// Dołącz do meczu
+export async function joinMatch(matchId, position, token) {
+  try {
+    const response = await axios.post(
+      `${API_URL}/participants`,
+      { matchId, position },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data; // wiadomość potwierdzająca i dane uczestnika
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data.error || 'Błąd dołączania do meczu');
+    } else {
+      throw new Error('Brak połączenia z serwerem');
+    }
+  }
+}
+
+// Pobierz mecze, do których użytkownik NIE dołączył
+export async function getAvailableMatches(userId, token) {
+  try {
+    const response = await axios.get(`${API_URL}/matches/available/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data; // lista dostępnych meczów
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data.error || 'Błąd pobierania dostępnych meczów');
+    } else {
+      throw new Error('Brak połączenia z serwerem');
+    }
+  }
+}
+
+
+
+
