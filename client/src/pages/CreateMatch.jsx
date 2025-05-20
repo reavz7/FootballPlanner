@@ -145,7 +145,7 @@ const CreateMatch = () => {
         )}
 
         <form className="flex flex-col items-center" onSubmit={handleSubmit}>
-          <div className="sm:grid sm:grid-cols-3 gap-12 w-full max-w-5xl mb-8 flex flex-col justify-center items-center sm:items-start">
+          <div className="lg:grid sm:grid-cols-3 gap-12 w-full max-w-5xl mb-8 flex flex-col justify-center items-center lg:items-start">
             <MatchBasicInfo formData={formData} handleInputChange={handleInputChange} />
             
             <MatchDateTimePicker 

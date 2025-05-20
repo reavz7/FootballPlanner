@@ -45,7 +45,7 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-4 h-30 md:justify-start md:space-x-10">
+        <div className="flex justify-between items-center py-4 h-30 lg:justify-start lg:space-x-10">
           {/* Logo */}
           <div className="flex justify-start lg:w-0 lg:flex-1">
             <Link to="/" className="flex items-center">
@@ -59,7 +59,7 @@ export default function Navbar() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <button
               type="button"
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none"
@@ -71,7 +71,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex space-x-10">
+          <nav className="hidden lg:flex space-x-10">
             <Link
               to="/"
               className={`text-base font-medium text-gray-800 hover:text-white cursor-pointer transition-all transition-.3s ${
@@ -115,7 +115,7 @@ export default function Navbar() {
           </nav>
 
           {/* Right side icons */}
-          <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0 gap-4 ">
+          <div className="hidden lg:flex items-center justify-end lg:flex-1 lg:w-0 gap-4 ">
             <Link
               to="/profile"
               className="whitespace-nowrap text-gray-500 hover:text-gray-900"
@@ -139,7 +139,7 @@ export default function Navbar() {
       </div>
 
       {/* Mobile menu */}
-      <div className={`${isOpen ? "block" : "hidden"} md:hidden`}>
+      <div className={`${isOpen ? "block" : "hidden"} lg:hidden`}>
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg">
           <Link
             to="/"
