@@ -27,7 +27,7 @@ const CreateMatch = () => {
   const [isParticipant, setIsParticipant] = useState(false)
   const [selectedPosition, setSelectedPosition] = useState("")
 
-  useEffect(() => {
+  useEffect(() => { 
     const token = localStorage.getItem("authToken")
     if (!token) {
       setError("Musisz być zalogowany, aby utworzyć mecz!")
@@ -76,27 +76,19 @@ const CreateMatch = () => {
         return
       }
 
-      // Tworzenie ISO string z uwzględnieniem strefy czasowej
       const dateTimeString = `${selectedDate}T${selectedTime}:00`
       const matchDateTime = new Date(dateTimeString)
-      
-      // Obliczenie offsetu strefy czasowej (w minutach)
-      const tzOffset = matchDateTime.getTimezoneOffset()
-      
-      // Korygujemy datę o offset strefy czasowej
-      // Jeśli mamy np. -120 minut (UTC+2), dodajemy 120 minut, aby zrekompensować
-      const correctedDateTime = new Date(matchDateTime.getTime() - tzOffset * 60000)
       
       const matchData = {
         title: formData.title,
         description: formData.description,
         location: formData.location,
-        date: correctedDateTime.toISOString(), // ISO string zawsze używa UTC (Z)
+        date: matchDateTime.toISOString(),
         isParticipant: isParticipant,
         position: selectedPosition,
       }
 
-      console.log("Wysyłanie daty:", correctedDateTime.toISOString()) // debug
+      console.log("Wysyłanie daty:", matchDateTime.toISOString()) // debug
       await createMatch(matchData, token)
 
       setSuccess("Mecz został pomyślnie utworzony!")
@@ -123,13 +115,13 @@ const CreateMatch = () => {
   return (
     <>
       <Navbar />
-      <div className="pt-38 bg-black min-h-screen">
+      <div className="pt-42 bg-black min-h-screen">
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-white text-4xl text-center uppercase font-medium mb-2">Stwórz mecz, zacznij grać.</h1>
+          <h1 className="text-white text-4xl text-center uppercase font-medium mb-2">Stwórz mecz, zacznij wygrywać.</h1>
           <p className="text-white text-center italic tracking-widest mb-1.5">Prosto i szybko.</p>
-          <div className="flex justify-center">
-            <div className="border-1 w-4xl border-white mb-4"></div>
-          </div>
+           <div className="flex justify-center">
+              <div className="border-b border-white w-24 mb-12"></div>
+            </div>
         </div>
 
         {success && (

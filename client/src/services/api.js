@@ -81,3 +81,36 @@ export async function createMatch(data, token) {
     }
   }
 }
+
+// Istniejąca metoda do pobierania meczów użytkownika
+export const getUserMatches = async (token) => {
+  try {
+    const response = await axios.get(`${API_URL}/matches/participating`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Błąd podczas pobierania meczów:', error);
+    throw error;
+  }
+};
+
+export const cancelMatchParticipation = async (token, matchId) => {
+  try {
+    const response = await axios.put(
+      `${API_URL}/matches/${matchId}/cancel-participation`,
+      {}, 
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Błąd podczas anulowania uczestnictwa w meczu:', error);
+    throw error;
+  }
+};

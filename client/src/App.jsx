@@ -4,6 +4,7 @@ import AuthForm from "./pages/AuthForm";
 import "./App.css";
 import Profile from "./pages/Profile";
 import CreateMatch from "./pages/CreateMatch";
+import MatchHistory from "./pages/MatchHistory";
 
 // Komponent zabezpieczający route
 function PrivateRoute({ children }) {
@@ -27,6 +28,14 @@ function App() {
           element={
             <PrivateRoute>
               <Profile/>
+            </PrivateRoute>
+          }
+      />
+      <Route
+          path="/match-history"
+          element={
+            <PrivateRoute>
+              <MatchHistory/>
             </PrivateRoute>
           }
       />

@@ -49,7 +49,7 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex justify-start lg:w-0 lg:flex-1">
             <Link to="/" className="flex items-center">
-              <span className="text-2xl font-bold text-black">
+              <span className="text-3xl font-medium italic text-black">
                 FootballPlanner
               </span>
               <span className="text-xs text-gray-400 ml-1 hidden sm:block">
