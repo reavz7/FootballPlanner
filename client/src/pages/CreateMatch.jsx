@@ -1,17 +1,19 @@
 "use client"
 
-import { useRef, useEffect, useState } from "react"
-import Navbar from "../components/Navbar"
-import ButtonPrimary from "../components/ButtonPrimary"
-import { createMatch } from "../services/api"
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
+import Navbar from "../components/Navbar"
+import Footer from "../components/Footer"
+import ButtonPrimary from "../components/ButtonPrimary"
 import SuccessAlert from "../components/SuccessAlert"
 import ErrorAlert from "../components/ErrorAlert"
-import Footer from "../components/Footer"
+import { createMatch } from "../services/api"
+import MatchBasicInfo from "../components/MatchBasicInfo"
+import MatchDateTimePicker from "../components/MatchDateTimePicker"
+import ParticipationSection from "../components/ParticipationSection"
 
 const CreateMatch = () => {
   const navigate = useNavigate()
-  const calendarRef = useRef(null)
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -31,36 +33,6 @@ const CreateMatch = () => {
       setError("Musisz być zalogowany, aby utworzyć mecz!")
       navigate("/login")
     }
-
-    const calendar = calendarRef.current
-
-    if (!calendar) return
-
-    const onDateChange = (e) => {
-      const date = e.target.value || e.detail // dostosuj wg eventu
-      if (!date) return
-
-      const today = new Date()
-      today.setHours(0, 0, 0, 0)
-
-      const selected = new Date(date)
-      selected.setHours(0, 0, 0, 0)
-
-      if (selected < today) {
-        setError("Nie możesz wybrać przeszłej daty!")
-        calendar.value = ""
-        setSelectedDate("")
-      } else {
-        setSelectedDate(date)
-        setError("") // Wyczyść błędy po prawidłowym wyborze daty
-      }
-    }
-
-    calendar.addEventListener("change", onDateChange)
-
-    return () => {
-      calendar.removeEventListener("change", onDateChange)
-    }
   }, [navigate])
 
   const handleInputChange = (e) => {
@@ -69,21 +41,6 @@ const CreateMatch = () => {
       ...formData,
       [name]: value,
     })
-  }
-
-  const handleTimeChange = (e) => {
-    setSelectedTime(e.target.value)
-  }
-
-  const handleParticipantChange = (e) => {
-    setIsParticipant(e.target.checked)
-    if (!e.target.checked) {
-      setSelectedPosition("")
-    }
-  }
-
-  const handlePositionChange = (e) => {
-    setSelectedPosition(e.target.value)
   }
 
   const handleSubmit = async (e) => {
@@ -101,9 +58,13 @@ const CreateMatch = () => {
       return
     }
 
-    // Łączenie daty i czasu w jeden obiekt Date lub string ISO
-    const dateTimeString = `${selectedDate}T${selectedTime}:00` // np. "2025-05-19T18:30:00"
-    const matchDateTime = new Date(dateTimeString)
+    // Sprawdź czy wybrany czas nie jest w przeszłości
+    const now = new Date()
+    const selected = new Date(`${selectedDate}T${selectedTime}`)
+    if (selected < now) {
+      setError("Nie możesz wybrać daty i czasu, które już minęły!")
+      return
+    }
 
     try {
       setLoading(true)
@@ -115,15 +76,27 @@ const CreateMatch = () => {
         return
       }
 
+      // Tworzenie ISO string z uwzględnieniem strefy czasowej
+      const dateTimeString = `${selectedDate}T${selectedTime}:00`
+      const matchDateTime = new Date(dateTimeString)
+      
+      // Obliczenie offsetu strefy czasowej (w minutach)
+      const tzOffset = matchDateTime.getTimezoneOffset()
+      
+      // Korygujemy datę o offset strefy czasowej
+      // Jeśli mamy np. -120 minut (UTC+2), dodajemy 120 minut, aby zrekompensować
+      const correctedDateTime = new Date(matchDateTime.getTime() - tzOffset * 60000)
+      
       const matchData = {
         title: formData.title,
         description: formData.description,
         location: formData.location,
-        date: matchDateTime.toISOString(),
+        date: correctedDateTime.toISOString(), // ISO string zawsze używa UTC (Z)
         isParticipant: isParticipant,
         position: selectedPosition,
       }
 
+      console.log("Wysyłanie daty:", correctedDateTime.toISOString()) // debug
       await createMatch(matchData, token)
 
       setSuccess("Mecz został pomyślnie utworzony!")
@@ -135,7 +108,6 @@ const CreateMatch = () => {
         location: "",
       })
       setSelectedDate("")
-      calendarRef.current.value = ""
 
       // Przekierowanie po krótkim opóźnieniu, żeby użytkownik zobaczył komunikat sukcesu
       setTimeout(() => {
@@ -174,103 +146,25 @@ const CreateMatch = () => {
 
         <form className="flex flex-col items-center" onSubmit={handleSubmit}>
           <div className="sm:grid sm:grid-cols-3 gap-12 w-full max-w-5xl mb-8 flex flex-col justify-center items-center sm:items-start">
-            <div className="flex flex-col items-end  gap-7.5">
-              <input
-                type="text"
-                name="title"
-                placeholder="Nazwa meczu"
-                className="input"
-                value={formData.title}
-                onChange={handleInputChange}
-                required
-              />
-              <input
-                type="text"
-                name="location"
-                placeholder="Lokalizacja meczu"
-                className="input"
-                value={formData.location}
-                onChange={handleInputChange}
-                required
-              />
-              <textarea
-                name="description"
-                className="textarea"
-                placeholder="Opis (opcjonalnie)"
-                value={formData.description}
-                onChange={handleInputChange}
-              ></textarea>
-            </div>
-            <div className="flex flex-col gap-4">
-              <calendar-date
-                ref={calendarRef}
-                className="cally bg-base-100 border border-base-300 shadow-lg rounded-box"
-              >
-                <svg
-                  aria-label="Previous"
-                  className="fill-current size-4"
-                  slot="previous"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                >
-                  <path fill="currentColor" d="M15.75 19.5 8.25 12l7.5-7.5"></path>
-                </svg>
-                <svg
-                  aria-label="Next"
-                  className="fill-current size-4"
-                  slot="next"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                >
-                  <path fill="currentColor" d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
-                </svg>
-                <calendar-month></calendar-month>
-              </calendar-date>
-
-              <input
-                type="time"
-                className="input w-[18rem]"
-                value={selectedTime}
-                onChange={handleTimeChange}
-                required
-              />
+            <MatchBasicInfo formData={formData} handleInputChange={handleInputChange} />
             
-            </div>
-            <div>
-              <div className="form-control mt-4">
-                <label className="cursor-pointer label justify-start gap-2">
-                  <input
-                    type="checkbox"
-                    className="checkbox checkbox-primary"
-                    checked={isParticipant}
-                    onChange={handleParticipantChange}
-                  />
-                  <span className="label-text text-white">Chcę być także uczestnikiem meczu</span>
-                </label>
-              </div>
-
-              {isParticipant && (
-                <div className="mt-2 w-full">
-                  <select
-                    className="select select-bordered w-full"
-                    value={selectedPosition}
-                    onChange={handlePositionChange}
-                    required={isParticipant}
-                  >
-                    <option value="" disabled>
-                      Wybierz preferowaną pozycję
-                    </option>
-                    <option value="bramkarz">Bramkarz</option>
-                    <option value="obrona">Obrona</option>
-                    <option value="pomoc">Pomoc</option>
-                    <option value="atak">Atak</option>
-                  </select>
-                </div>
-              )}
-              </div>
+            <MatchDateTimePicker 
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              selectedTime={selectedTime}
+              setSelectedTime={setSelectedTime}
+              setError={setError}
+            />
+            
+            <ParticipationSection 
+              isParticipant={isParticipant}
+              setIsParticipant={setIsParticipant}
+              selectedPosition={selectedPosition}
+              setSelectedPosition={setSelectedPosition}
+            />
           </div>
 
-          <div className="flex justify-center mb-30   ">
+          <div className="flex justify-center mb-30">
             <ButtonPrimary type={"submit"} text={loading ? "Tworzenie..." : "Stwórz mecz"} disabled={loading} />
           </div>
         </form>
