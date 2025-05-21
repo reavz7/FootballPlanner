@@ -4,17 +4,17 @@ const { Match, Participant } = require("../models");
 const { Op } = require("sequelize");
 const verifyToken = require("../middleware/verifyToken");
 
-// GET /matches - tylko mecze, które jeszcze się nie odbyły
+
 router.get("/", verifyToken, async (req, res) => {
   try {
     const now = new Date();
     const matches = await Match.findAll({
       where: {
         date: {
-          [Op.gt]: now, // tylko mecze z datą większą niż teraz
+          [Op.gt]: now, 
         },
       },
-      order: [["date", "ASC"]], // opcjonalnie: sortuj rosnąco po dacie
+      order: [["date", "ASC"]], 
     });
     res.json(matches);
   } catch (error) {
@@ -25,7 +25,7 @@ router.get("/", verifyToken, async (req, res) => {
   }
 });
 
-// POST /matches - tworzy nowy mecz i ewentualnie dodaje uczestnika
+
 router.post("/", verifyToken, async (req, res) => {
   try {
     const { title, description, location, date, isParticipant, position } =
@@ -53,7 +53,7 @@ router.post("/", verifyToken, async (req, res) => {
           });
       }
 
-      // Upewnij się, że masz model Participant zaimportowany
+      
       await Participant.create({
         matchId: newMatch.id,
         userId: createdBy,
@@ -138,12 +138,12 @@ router.put("/:matchId/cancel-participation", verifyToken, async (req, res) => {
     const userId = req.user.id;
     const matchId = req.params.matchId;
 
-    // Sprawdzamy, czy użytkownik jest uczestnikiem tego meczu
+    
     const participant = await Participant.findOne({
       where: {
         userId,
         matchId,
-        isConfirmed: true, // Możemy anulować tylko potwierdzone uczestnictwo
+        isConfirmed: true, 
       },
     });
 
@@ -155,7 +155,7 @@ router.put("/:matchId/cancel-participation", verifyToken, async (req, res) => {
       });
     }
 
-    // Sprawdzamy, czy mecz już się nie rozpoczął
+    
     const match = await Match.findByPk(matchId);
     if (!match) {
       return res.status(404).json({
@@ -164,7 +164,7 @@ router.put("/:matchId/cancel-participation", verifyToken, async (req, res) => {
       });
     }
 
-    // Jeśli mecz już się odbył, nie pozwalamy na anulowanie
+    
     if (new Date(match.date) < new Date()) {
       return res.status(400).json({
         success: false,
@@ -173,7 +173,7 @@ router.put("/:matchId/cancel-participation", verifyToken, async (req, res) => {
       });
     }
 
-    // Aktualizujemy status uczestnictwa
+    
     participant.isConfirmed = false;
     await participant.save();
 
@@ -191,7 +191,7 @@ router.put("/:matchId/cancel-participation", verifyToken, async (req, res) => {
   }
 });
 
-// GET /matches/available/:userId - mecze, do których użytkownik NIE dołączył
+
 router.get("/available/:userId", verifyToken, async (req, res) => {
   try {
     const { userId } = req.params;

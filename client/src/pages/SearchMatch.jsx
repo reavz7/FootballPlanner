@@ -34,7 +34,6 @@ const SearchMatch = () => {
   const [participants, setParticipants] = useState([]);
   const [participantCounts, setParticipantCounts] = useState({});
 
-  // Fetch available matches on component mount
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
     const userDetails = localStorage.getItem("user");
@@ -107,25 +106,21 @@ const SearchMatch = () => {
     }
   };
 
-  // Function to handle filtering from FilterBar component
   const handleFilter = (filtered) => {
     setFilteredMatches(filtered);
   };
 
-  // Function to determine participant count color
   const getParticipantColor = (count) => {
     if (count < 10) return "text-green-500";
     if (count >= 10 && count < 20) return "text-orange-500";
     return "text-red-500";
   };
 
-  // Function to handle joining a match
   const handleJoinMatch = (matchId) => {
     setSelectedMatchId(matchId);
     setShowPositionModal(true);
   };
 
-  // Function to confirm joining a match with selected position
   const confirmJoinMatch = async () => {
     if (!selectedMatchId) return;
 
@@ -137,10 +132,8 @@ const SearchMatch = () => {
       setSelectedPosition("");
       setShowPositionModal(false);
 
-      // Refresh available matches after joining
       fetchAvailableMatches(userId, token);
 
-      // Clear success message after a delay
       setTimeout(() => {
         setSuccess("");
       }, 3000);
@@ -157,7 +150,6 @@ const SearchMatch = () => {
       setLoading(true);
       const matchData = matches.find((m) => m.id === matchId);
 
-      // Fetch participants for this match
       const matchParticipants = await getMatchParticipants(matchId, token);
 
       setMatchDetails(matchData);
@@ -171,7 +163,6 @@ const SearchMatch = () => {
     }
   };
 
-  // Format date
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(dateString).toLocaleDateString("pl-PL", options);
@@ -337,7 +328,7 @@ const SearchMatch = () => {
         </div>
       )}
 
-      {/* Match Details Modal Component will be imported */}
+      {/* Match Details Modal*/}
       {showDetailsModal && matchDetails && (
         <MatchDetailsModal
           match={matchDetails}

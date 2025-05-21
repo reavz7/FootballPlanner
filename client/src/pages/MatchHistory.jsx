@@ -174,9 +174,7 @@ const MatchHistory = () => {
                           </div>
                         )}
 
-                        {/* Bottom section with position, location, and participants */}
                         <div className="flex flex-wrap justify-center sm:justify-start gap-8">
-                          {/* Pozycja */}
                           <div className="flex flex-col items-center">
                             <div
                               className={`w-16 h-16 rounded-full flex items-center justify-center ${getPositionColor(
@@ -196,7 +194,6 @@ const MatchHistory = () => {
                             </span>
                           </div>
 
-                          {/* Lokalizacja */}
                           <div className="flex flex-col items-center text-center">
                             <div className="w-16 h-16 rounded-full bg-violet-800 flex items-center justify-center mb-2">
                               <MapPin size={24} className="text-white" />
@@ -206,7 +203,6 @@ const MatchHistory = () => {
                             </span>
                           </div>
 
-                          {/* Liczba uczestników */}
                           <div className="flex flex-col items-center">
                             <div className="w-16 h-16 rounded-full bg-blue-800 flex items-center justify-center mb-2">
                               <Users size={24} className="text-white" />

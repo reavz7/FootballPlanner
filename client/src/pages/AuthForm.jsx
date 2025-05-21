@@ -27,13 +27,11 @@ export default function AuthForm() {
       let response;
       
       if (isLogin) {
-        // Logowanie
         response = await loginUser({
           email: formData.email,
           password: formData.password
         });
       } else {
-        // Rejestracja
         response = await registerUser({
           username: formData.username,
           email: formData.email,

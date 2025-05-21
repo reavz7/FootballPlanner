@@ -8,7 +8,7 @@ app.use(cors());
 app.use(express.json());
 
 
-// Reszta routów
+
 app.use("/users", require("./routes/Users"));
 app.use("/matches", require("./routes/Matches"));
 app.use("/participants", require("./routes/Participants"));
@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 5000;
     await db.sequelize.authenticate();
     console.log("Połączono z bazą danych.");
 
-    // Synchronizacja wszystkich modeli
+    
     await db.User.sync({ alter: true });
     await db.Match.sync({ alter: true });
     await db.Participant.sync({ alter: true });

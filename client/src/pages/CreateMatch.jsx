@@ -58,7 +58,6 @@ const CreateMatch = () => {
       return
     }
 
-    // Sprawdź czy wybrany czas nie jest w przeszłości
     const now = new Date()
     const selected = new Date(`${selectedDate}T${selectedTime}`)
     if (selected < now) {
@@ -88,12 +87,11 @@ const CreateMatch = () => {
         position: selectedPosition,
       }
 
-      console.log("Wysyłanie daty:", matchDateTime.toISOString()) // debug
+      console.log("Wysyłanie daty:", matchDateTime.toISOString())
       await createMatch(matchData, token)
 
       setSuccess("Mecz został pomyślnie utworzony!")
 
-      // Resetuj formularz po udanym utworzeniu
       setFormData({
         title: "",
         description: "",
@@ -101,7 +99,6 @@ const CreateMatch = () => {
       })
       setSelectedDate("")
 
-      // Przekierowanie po krótkim opóźnieniu, żeby użytkownik zobaczył komunikat sukcesu
       setTimeout(() => {
         navigate("/")
       }, 2000)
