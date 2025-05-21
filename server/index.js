@@ -11,6 +11,8 @@ app.use(express.json());
 // Reszta routów
 app.use("/users", require("./routes/Users"));
 app.use("/matches", require("./routes/Matches"));
+app.use("/participants", require("./routes/Participants"));
+
 
 const PORT = process.env.PORT || 5000;
 
@@ -30,4 +32,4 @@ const PORT = process.env.PORT || 5000;
   } catch (err) {
     console.error("Błąd połączenia lub synchronizacji:", err);
   }
-})();
+})();     

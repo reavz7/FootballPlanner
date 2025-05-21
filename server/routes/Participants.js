@@ -32,25 +32,35 @@ router.get("/match/:matchId", verifyToken, async (req, res) => {
 // POST /participants - dołączanie użytkownika do meczu
 router.post("/", verifyToken, async (req, res) => {
   try {
-    const userId = req.user.id; // zakładam, że verifyToken ustawia req.user
+    const userId = req.user.id;
     const { matchId, position } = req.body;
 
     if (!matchId) {
       return res.status(400).json({ error: "Brakuje matchId w body" });
     }
 
-    // Sprawdź, czy uczestnik już jest w meczu (opcjonalnie)
+    // Sprawdź, czy uczestnik już istnieje w meczu
     const existing = await Participant.findOne({ where: { userId, matchId } });
+
     if (existing) {
-      return res.status(400).json({ error: "Użytkownik już dołączył do tego meczu" });
+      if (existing.isConfirmed) {
+        return res.status(400).json({ error: "Użytkownik już dołączył do tego meczu" });
+      }
+
+      // Użytkownik wcześniej wyszedł, więc aktualizujemy rekord
+      existing.isConfirmed = true;
+      if (position) existing.position = position;
+      await existing.save();
+
+      return res.status(200).json({ message: "Powrócono do meczu", participant: existing });
     }
 
-    // Dodaj uczestnika (domyślnie isConfirmed false - można ustawić true, jeśli chcesz)
+    // Tworzymy nowy rekord
     const participant = await Participant.create({
       userId,
       matchId,
       position: position || null,
-      isConfirmed: false,
+      isConfirmed: true, // od razu potwierdzony, skoro dołącza
     });
 
     res.status(201).json({ message: "Dołączono do meczu", participant });
@@ -62,5 +72,6 @@ router.post("/", verifyToken, async (req, res) => {
     });
   }
 });
+
 
 module.exports = router;

@@ -71,7 +71,6 @@ router.post("/", verifyToken, async (req, res) => {
     });
   }
 });
-
 router.get("/participating", verifyToken, async (req, res) => {
   try {
     const userId = req.user.id;
@@ -80,55 +79,47 @@ router.get("/participating", verifyToken, async (req, res) => {
       include: [
         {
           model: Participant,
+          attributes: ["userId", "position"],
           where: {
-            userId,
-            isConfirmed: true, // tylko potwierdzeni uczestnicy - użytkownik
-          },
-          attributes: ["position"],
-        },
-        {
-          model: Participant,
-          where: {
-            isConfirmed: true, // liczymy tylko potwierdzonych uczestników ogólnie
-          },
-          attributes: ["id"],
-        },
+            isConfirmed: true
+          }
+        }
       ],
       order: [["date", "ASC"]],
     });
 
     const now = new Date();
 
-    const response = participatingMatches.map((match) => {
-      const matchData = match.toJSON();
+    const response = participatingMatches
+      .filter(match => match.Participants.some(p => p.userId === userId))
+      .map((match) => {
+        const matchData = match.toJSON();
 
-      const totalParticipants = matchData.Participants.length;
+        const totalParticipants = matchData.Participants.length;
 
-      const userPosition =
-        matchData.Participants.length > 0
-          ? matchData.Participants[0].position
-          : null;
+        const userPosition =
+          matchData.Participants.find(p => p.userId === userId)?.position || null;
 
-      const matchDate = new Date(matchData.date);
-      const formattedDate = matchDate.toLocaleString("pl-PL", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
+        const matchDate = new Date(matchData.date);
+        const formattedDate = matchDate.toLocaleString("pl-PL", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+        const isPast = matchDate < now;
+
+        return {
+          ...matchData,
+          date: formattedDate,
+          position: userPosition,
+          totalParticipants,
+          isPast,
+          Participants: undefined,
+        };
       });
-
-      const isPast = matchDate < now;
-
-      return {
-        ...matchData,
-        date: formattedDate,
-        position: userPosition,
-        totalParticipants,
-        isPast, // CZY MECZ JUŻ BYŁ
-        Participants: undefined, // usuwamy pełną listę uczestników
-      };
-    });
 
     res.json(response);
   } catch (error) {
@@ -139,6 +130,8 @@ router.get("/participating", verifyToken, async (req, res) => {
     });
   }
 });
+
+
 
 router.put("/:matchId/cancel-participation", verifyToken, async (req, res) => {
   try {
