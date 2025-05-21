@@ -17,7 +17,7 @@ app.use("/participants", require("./routes/Participants"));
 const PORT = process.env.PORT || 5000;
 
 (async () => {
-  try {
+  try { 
     await db.sequelize.authenticate();
     console.log("Połączono z bazą danych.");
 

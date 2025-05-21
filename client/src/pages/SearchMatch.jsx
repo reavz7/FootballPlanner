@@ -83,19 +83,25 @@ const SearchMatch = () => {
 
       setMatches(formattedMatches);
       setFilteredMatches(formattedMatches);
-      
+
       // Fetch participant counts for each match
       const counts = {};
       for (const match of formattedMatches) {
         try {
-          const matchParticipants = await getMatchParticipants(match.id, authToken);
+          const matchParticipants = await getMatchParticipants(
+            match.id,
+            authToken
+          );
           counts[match.id] = matchParticipants.length;
         } catch (err) {
-          console.error(`Błąd pobierania uczestników dla meczu ${match.id}:`, err);
+          console.error(
+            `Błąd pobierania uczestników dla meczu ${match.id}:`,
+            err
+          );
           counts[match.id] = 0;
         }
       }
-      
+
       setParticipantCounts(counts);
       setError("");
     } catch (err) {
@@ -162,7 +168,6 @@ const SearchMatch = () => {
       setLoading(false);
     }
   };
-
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return new Date(dateString).toLocaleDateString("pl-PL", options);
@@ -248,8 +253,8 @@ const SearchMatch = () => {
                                 participantCounts[match.id] || 0
                               )}`}
                             >
-                              {participantCounts[match.id] || 0} / {match.maxParticipants}{" "}
-                              uczestników
+                              {participantCounts[match.id] || 0} /{" "}
+                              {match.maxParticipants} uczestników
                             </span>
                           </div>
                         </div>
@@ -300,9 +305,9 @@ const SearchMatch = () => {
               >
                 <option value="">Wybierz pozycję (opcjonalnie)</option>
                 <option value="bramkarz">Bramkarz</option>
-                <option value="obrońca">Obrońca</option>
-                <option value="pomocnik">Pomocnik</option>
-                <option value="napastnik">Napastnik</option>
+                <option value="obrona">Obrona</option>
+                <option value="pomoc">Pomoc</option>
+                <option value="atak">Atak</option>
               </select>
             </div>
 
