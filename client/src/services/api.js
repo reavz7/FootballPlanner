@@ -32,7 +32,6 @@ export async function loginUser(data) {
   }
 }
 
-// Pobranie danych aktualnego użytkownika
 export async function getCurrentUser(token) {
   try {
     const response = await axios.get(`${API_URL}/users/me`, {
@@ -173,6 +172,54 @@ export async function getAvailableMatches(userId, token) {
   }
 }
 
+// Zmiana hasła
+export async function changePassword(currentPassword, newPassword, token) {
+  try {
+    const response = await axios.put(`${API_URL}/users/change-password`, {
+      currentPassword,
+      newPassword
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Błąd zmiany hasła');
+  }
+}
+
+// Zmiana emaila
+export async function changeEmail(newEmail, token) {
+  try {
+    const response = await axios.put(`${API_URL}/users/change-email`, {
+      newEmail
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Błąd zmiany emaila');
+  }
+}
+
+// Zmiana pseudonimu
+export async function changeUsername(newUsername, token) {
+  try {
+    const response = await axios.put(`${API_URL}/users/change-username`, {
+      newUsername
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Błąd zmiany pseudonimu');
+  }
+}
 
 
 
