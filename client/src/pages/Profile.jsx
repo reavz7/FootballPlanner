@@ -86,13 +86,13 @@ const Profile = () => {
     <>
       <Navbar />
       <div className="min-h-screen bg-gradient-to-b from-black to-gray-900">
-        <main className="py-16 px-4 pt-24 md:pt-32">
+        <main className="py-16 px-4 pt-24 md:pt-42">
           <div className="max-w-4xl mx-auto">
             <header className="text-center mb-10">
               <h1 className="text-white text-4xl uppercase font-medium mb-2">Twój profil</h1>
               <p className="text-gray-300 italic tracking-widest mb-3">Zmieniaj, przeglądaj</p>
               <div className="flex justify-center">
-                <div className="border-b-2 border-emerald-500 w-24 mb-4"></div>
+                <div className="border-b-2 border-white w-24 mb-4"></div>
               </div>
             </header>
 
@@ -107,7 +107,7 @@ const Profile = () => {
               {/* User Info Card */}
               <div className="h-full">
                 <div className="bg-gray-800 rounded-xl p-8 text-white shadow-xl h-full border border-gray-700 flex flex-col">
-                  <h2 className="text-xl font-semibold mb-6 text-emerald-400 flex items-center">
+                  <h2 className="text-xl font-semibold mb-6 text-violet-400 flex items-center">
                     <UserCircle className="mr-2" size={24} />
                     Informacje o profilu
                   </h2>
@@ -138,7 +138,7 @@ const Profile = () => {
                   <div className="space-y-6">
                     {/* Email Form */}
                     <form onSubmit={handleEmailChange} className="space-y-3">
-                      <h3 className="text-lg font-medium text-emerald-400 flex items-center">
+                      <h3 className="text-lg font-medium text-violet-400 flex items-center">
                         <Mail className="mr-2" size={20} />
                         Zmień Email
                       </h3>
@@ -147,14 +147,14 @@ const Profile = () => {
                           type="email"
                           value={newEmail}
                           onChange={(e) => setNewEmail(e.target.value)}
-                          className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none transition"
+                          className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 focus:outline-none transition"
                           placeholder="Nowy adres email"
                           required
                         />
                       </div>
                       <button
                         type="submit"
-                        className="w-full bg-emerald-600 hover:bg-emerald-700 px-4 py-3 rounded-lg text-white font-medium transition-colors duration-200 flex justify-center items-center"
+                        className="w-full bg-violet-600 hover:bg-violet-700 px-4 py-3 rounded-lg text-white font-medium transition-colors duration-200 flex justify-center items-center"
                       >
                         Aktualizuj Email
                       </button>
@@ -164,7 +164,7 @@ const Profile = () => {
 
                     {/* Username Form */}
                     <form onSubmit={handleUsernameChange} className="space-y-3">
-                      <h3 className="text-lg font-medium text-emerald-400 flex items-center">
+                      <h3 className="text-lg font-medium text-violet-400 flex items-center">
                         <UserCircle className="mr-2" size={20} />
                         Zmień Pseudonim
                       </h3>
@@ -173,14 +173,14 @@ const Profile = () => {
                           type="text"
                           value={newUsername}
                           onChange={(e) => setNewUsername(e.target.value)}
-                          className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none transition"
+                          className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 focus:outline-none transition"
                           placeholder="Nowy pseudonim"
                           required
                         />
                       </div>
                       <button
                         type="submit"
-                        className="w-full bg-emerald-600 hover:bg-emerald-700 px-4 py-3 rounded-lg text-white font-medium transition-colors duration-200 flex justify-center items-center"
+                        className="w-full bg-violet-600 hover:bg-violet-700 px-4 py-3 rounded-lg text-white font-medium transition-colors duration-200 flex justify-center items-center"
                       >
                         Aktualizuj Pseudonim
                       </button>
@@ -190,7 +190,7 @@ const Profile = () => {
 
                     {/* Password Form */}
                     <form onSubmit={handlePasswordChange} className="space-y-3">
-                      <h3 className="text-lg font-medium text-emerald-400 flex items-center">
+                      <h3 className="text-lg font-medium text-violet-400 flex items-center">
                         <Key className="mr-2" size={20} />
                         Zmień Hasło
                       </h3>
@@ -199,7 +199,7 @@ const Profile = () => {
                           type="password"
                           value={currentPassword}
                           onChange={(e) => setCurrentPassword(e.target.value)}
-                          className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none transition mb-3"
+                          className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 focus:outline-none transition mb-3"
                           placeholder="Obecne hasło"
                           required
                         />
@@ -209,14 +209,14 @@ const Profile = () => {
                           type="password"
                           value={newPassword}
                           onChange={(e) => setNewPassword(e.target.value)}
-                          className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none transition"
+                          className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 focus:outline-none transition"
                           placeholder="Nowe hasło"
                           required
                         />
                       </div>
                       <button
                         type="submit"
-                        className="w-full bg-emerald-600 hover:bg-emerald-700 px-4 py-3 rounded-lg text-white font-medium transition-colors duration-200 flex justify-center items-center"
+                        className="w-full bg-violet-600 hover:bg-violet-700 px-4 py-3 rounded-lg text-white font-medium transition-colors duration-200 flex justify-center items-center"
                       >
                         Aktualizuj Hasło
                       </button>
