@@ -19,6 +19,7 @@ const MatchBasicInfo = ({ formData, handleInputChange }) => {
         className="input"
         value={formData.location}
         onChange={handleInputChange}
+        maxLength={35} 
         required
       />
       <textarea
@@ -27,9 +28,11 @@ const MatchBasicInfo = ({ formData, handleInputChange }) => {
         placeholder="Opis (opcjonalnie)"
         value={formData.description}
         onChange={handleInputChange}
+        maxLength={50} 
       ></textarea>
     </div>
-  )
-}
+  );
+};
+
 
 export default MatchBasicInfo

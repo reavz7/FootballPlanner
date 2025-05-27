@@ -3,6 +3,7 @@ const router = express.Router();
 const { Match, Participant } = require("../models");
 const { Op } = require("sequelize");
 const verifyToken = require("../middleware/verifyToken");
+const { sequelize } = require("../models");
 
 
 router.get("/", verifyToken, async (req, res) => {
@@ -192,11 +193,13 @@ router.put("/:matchId/cancel-participation", verifyToken, async (req, res) => {
 });
 
 
+
 router.get("/available/:userId", verifyToken, async (req, res) => {
   try {
     const { userId } = req.params;
     const now = new Date();
 
+    // Pobieramy mecze, w których user już jest (potwierdzony)
     const joinedMatchIds = await Participant.findAll({
       where: {
         userId,
@@ -207,11 +210,30 @@ router.get("/available/:userId", verifyToken, async (req, res) => {
 
     const joinedIds = joinedMatchIds.map((p) => p.matchId);
 
+    // Szukamy dostępnych meczów, które:
+    // - nie są w joinedIds
+    // - mają datę w przyszłości
+    // - mają mniej niż 30 potwierdzonych uczestników
     const availableMatches = await Match.findAll({
       where: {
-        id: { [Op.notIn]: joinedIds },
+        id: { [Op.notIn]: joinedIds.length > 0 ? joinedIds : [0] },
         date: { [Op.gt]: now },
       },
+      attributes: {
+        include: [
+          [sequelize.fn('COUNT', sequelize.col('Participants.id')), 'participantsCount']
+        ]
+      },
+      include: [
+        {
+          model: Participant,
+          attributes: [],
+          where: { isConfirmed: true },  // <<< tutaj tylko potwierdzeni
+          required: false,               // żeby mecz bez uczestników też się wyświetlił
+        }
+      ],
+      group: ['Match.id'],
+      having: sequelize.literal('COUNT(Participants.id) < 30'),
       order: [["date", "ASC"]],
     });
 
@@ -224,4 +246,5 @@ router.get("/available/:userId", verifyToken, async (req, res) => {
     });
   }
 });
+
 module.exports = router;
