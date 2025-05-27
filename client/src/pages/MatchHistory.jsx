@@ -14,6 +14,10 @@ const MatchHistory = () => {
   const [modalOpen, setModalOpen] = useState(false)
   const [currentParticipants, setCurrentParticipants] = useState([])
   const [currentMatchTitle, setCurrentMatchTitle] = useState("")
+  
+  // Nowe stany dla filtrów
+  const [showCompleted, setShowCompleted] = useState(true)
+  const [showUpcoming, setShowUpcoming] = useState(true)
 
   useEffect(() => {
     const fetchMatches = async () => {
@@ -54,6 +58,17 @@ const MatchHistory = () => {
 
     fetchMatches()
   }, [])
+
+  // Funkcja filtrowania meczów
+  const getFilteredMatches = () => {
+    return matches.filter(match => {
+      if (!showCompleted && match.isPast) return false
+      if (!showUpcoming && !match.isPast) return false
+      return true
+    })
+  }
+
+  const filteredMatches = getFilteredMatches()
 
   const getPositionName = (position) => {
     const positions = {
@@ -135,22 +150,56 @@ const MatchHistory = () => {
             </div>
           </header>
 
+          {/* Sekcja filtrów */}
+          <div className="bg-gray-800 rounded-xl mb-6 p-4 border border-gray-700">
+            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+              <span className="text-white font-medium">Filtruj mecze:</span>
+              <div className="flex flex-wrap gap-4">
+                <label className="flex items-center gap-2 text-gray-300 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={showCompleted}
+                    onChange={(e) => setShowCompleted(e.target.checked)}
+                    className="w-4 h-4 text-green-600 bg-gray-700 border-gray-600 rounded focus:ring-green-500 focus:ring-2"
+                  />
+                  <CheckCircle size={16} className="text-green-400" />
+                  <span>Zakończone</span>
+                </label>
+                <label className="flex items-center gap-2 text-gray-300 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={showUpcoming}
+                    onChange={(e) => setShowUpcoming(e.target.checked)}
+                    className="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500 focus:ring-2"
+                  />
+                  <Clock size={16} className="text-blue-400" />
+                  <span>Do rozegrania</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
           <div className="bg-gray-800 rounded-xl shadow-xl overflow-hidden">
             <div className="p-4 bg-gray-700 border-b border-gray-600 flex justify-between items-center">
               <h2 className="text-white font-medium">Wszystkie twoje mecze</h2>
               <span className="bg-yellow-400 text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
-                {matches.length} mecz{matches.length !== 1 ? "e" : ""}
+                {filteredMatches.length} mecz{filteredMatches.length !== 1 ? "e" : ""}
               </span>
             </div>
 
             <div className="max-h-[65vh] overflow-y-auto">
               {loading ? (
                 <div className="p-8 text-center text-gray-400">Ładowanie meczów...</div>
-              ) : matches.length === 0 ? (
-                <div className="p-8 text-center text-gray-400">Brak historii meczów do wyświetlenia</div>
+              ) : filteredMatches.length === 0 ? (
+                <div className="p-8 text-center text-gray-400">
+                  {matches.length === 0 
+                    ? "Brak historii meczów do wyświetlenia"
+                    : "Brak meczów spełniających wybrane kryteria filtrowania"
+                  }
+                </div>
               ) : (
                 <div className="divide-y divide-gray-700">
-                  {matches.map((match, index) => (
+                  {filteredMatches.map((match, index) => (
                     <div key={index} className="p-6 hover:bg-gray-700/50 transition-colors">
                       <div className="flex flex-col space-y-6">
                         <div className="flex flex-wrap items-start justify-between gap-4">
@@ -192,7 +241,7 @@ const MatchHistory = () => {
                             </div>
                             <span className="text-white text-sm font-medium mb-2">
                               {participantCounts[match.id] || 0}{" "}
-                              {match.maxParticipants ? `/ ${match.maxParticipants}` : ""} graczy
+                             graczy
                             </span>
                             <button
                               onClick={() => handleShowParticipants(match.id, match.title)}
