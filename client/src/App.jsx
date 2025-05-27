@@ -6,6 +6,7 @@ import Profile from "./pages/Profile";
 import CreateMatch from "./pages/CreateMatch";
 import MatchHistory from "./pages/MatchHistory";
 import SearchMatch from "./pages/SearchMatch";
+import ManageMatches from "./pages/ManageMatches";
 
 // Komponent zabezpieczający route
 function PrivateRoute({ children }) {
@@ -29,6 +30,15 @@ function App() {
           element={
             <PrivateRoute>
               <Profile/>
+            </PrivateRoute>
+          }
+      />
+      
+        <Route
+          path="/manage-matches"
+          element={
+            <PrivateRoute>
+              <ManageMatches/>
             </PrivateRoute>
           }
       />

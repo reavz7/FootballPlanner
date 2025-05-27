@@ -247,4 +247,57 @@ router.get("/available/:userId", verifyToken, async (req, res) => {
   }
 });
 
+
+// 1. Pobierz przyszłe mecze stworzone przez zalogowanego użytkownika
+router.get("/usercreations", verifyToken, async (req, res) => {
+  try {
+    const now = new Date();
+    const matches = await Match.findAll({
+      where: {
+        createdBy: req.user.id,
+        date: { [Op.gt]: now }
+      },
+      order: [["date", "ASC"]]
+    });
+    res.json(matches);
+  } catch (error) {
+    console.error("Błąd podczas pobierania meczów:", error);
+    res.status(500).json({ error: "Błąd podczas pobierania meczów", details: error.message });
+  }
+});
+
+// 2. Edytuj mecz (tylko właściciel)
+router.put("/:matchId", verifyToken, async (req, res) => {
+  try {
+    const { matchId } = req.params;
+    const match = await Match.findByPk(matchId);
+    if (!match || match.createdBy !== req.user.id) {
+      return res.status(403).json({ error: "Brak dostępu lub mecz nie istnieje" });
+    }
+    const { title, description, location, date } = req.body;
+    await match.update({ title, description, location, date });
+    res.json(match);
+  } catch (error) {
+    console.error("Błąd podczas edycji meczu:", error);
+    res.status(500).json({ error: "Błąd podczas edycji meczu", details: error.message });
+  }
+});
+
+// 3. Usuń mecz (tylko właściciel)
+router.delete("/:matchId", verifyToken, async (req, res) => {
+  try {
+    const { matchId } = req.params;
+    const match = await Match.findByPk(matchId);
+    if (!match || match.createdBy !== req.user.id) {
+      return res.status(403).json({ error: "Brak dostępu lub mecz nie istnieje" });
+    }
+    await match.destroy();
+    res.json({ message: "Mecz usunięty pomyślnie" });
+  } catch (error) {
+    console.error("Błąd podczas usuwania meczu:", error);
+    res.status(500).json({ error: "Błąd podczas usuwania meczu", details: error.message });
+  }
+});
+
+
 module.exports = router;

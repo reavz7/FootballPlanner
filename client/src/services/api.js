@@ -223,3 +223,44 @@ export async function changeUsername(newUsername, token) {
 
 
 
+// 1. Pobierz przyszłe mecze stworzone przez zalogowanego użytkownika
+export async function getUserCreatedMatches(token) {
+  try {
+    const response = await axios.get(`${API_URL}/matches/usercreations`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data; // lista meczów
+  } catch (error) {
+    throw new Error(error.response?.data?.error || 'Błąd pobierania meczów użytkownika');
+  }
+}
+
+// 2. Edytuj mecz
+export async function updateMatch(matchId, data, token) {
+  try {
+    const response = await axios.put(`${API_URL}/matches/${matchId}`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data; // zaktualizowany mecz
+  } catch (error) {
+    throw new Error(error.response?.data?.error || 'Błąd edycji meczu');
+  }
+}
+
+// 3. Usuń mecz
+export async function deleteMatch(matchId, token) {
+  try {
+    const response = await axios.delete(`${API_URL}/matches/${matchId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return response.data; // potwierdzenie usunięcia
+  } catch (error) {
+    throw new Error(error.response?.data?.error || 'Błąd usuwania meczu');
+  }
+}

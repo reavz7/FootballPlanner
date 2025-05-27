@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Menu, X, ShoppingBag, User, Search, LogOut } from "lucide-react";
+import { Menu, X, ShoppingBag, User, Search, LogOut, Settings } from "lucide-react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,17 +44,15 @@ export default function Navbar() {
         scrolled ? "bg-white shadow-md" : "bg-violet-500"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-1">
         <div className="flex justify-between items-center py-4 h-30 lg:justify-start lg:space-x-10">
           {/* Logo */}
-          <div className="flex justify-start lg:w-0 lg:flex-1">
+          <div className="">
             <Link to="/" className="flex items-center">
               <span className="text-3xl font-medium italic text-black">
                 FootballPlanner
               </span>
-              <span className="text-xs text-gray-400 ml-1 hidden sm:block">
-                zagrajmy, razem.
-              </span>
+           
             </Link>
           </div>
 
@@ -71,7 +69,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop nav */}
-          <nav className="hidden lg:flex space-x-10">
+          <nav className="hidden lg:flex space-x-8">
             <Link
               to="/"
               className={`text-base font-medium text-gray-800 hover:text-white cursor-pointer transition-all transition-.3s ${
@@ -100,7 +98,17 @@ export default function Navbar() {
                   : "text-gray-800 hover:text-gray-900"
               }`}
             >
-              Historia meczy
+              Historia meczów
+            </Link>
+            <Link
+              to="/manage-matches"
+              className={`text-base font-medium text-gray-800 hover:text-white cursor-pointer transition-all transition-.3s ${
+                isActive("/manage-matches")
+                  ? "text-black border-b-2 border-black"
+                  : "text-gray-800 hover:text-gray-900"
+              }`}
+            >
+              Zarządzaj meczami
             </Link>
             <Link
               to="/search-match"
@@ -172,7 +180,18 @@ export default function Navbar() {
             }`}
             onClick={() => setIsOpen(false)}
           >
-            Historia meczy
+            Historia meczów
+          </Link>
+          <Link
+            to="/manage-matches"
+            className={`block px-3 py-2 rounded-md text-base font-medium ${
+              isActive("/manage-matches")
+                ? "text-black bg-gray-100"
+                : "text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+            }`}
+            onClick={() => setIsOpen(false)}
+          >
+            Zarządzaj meczami
           </Link>
           <Link
             to="/search-match"
