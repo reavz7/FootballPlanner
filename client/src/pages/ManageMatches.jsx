@@ -17,8 +17,13 @@ import {
   X,
   AlertTriangle,
 } from "lucide-react";
-// Import API functions - you'll need to implement these
-// import { getUserCreatedMatches, deleteMatch, updateMatch, getMatchParticipants } from "../services/api"
+// Import API functions
+import {
+  getUserCreatedMatches,
+  deleteMatch,
+  updateMatch,
+  getMatchParticipants,
+} from "../services/api";
 
 const ManageMatches = () => {
   const navigate = useNavigate();
@@ -66,39 +71,18 @@ const ManageMatches = () => {
 
     try {
       setLoading(true);
-      // Replace with actual API call
-      // const response = await getUserCreatedMatches(token)
+      setError("");
 
-      // Mock data for development
-      const mockMatches = [
-        {
-          id: 1,
-          title: "simba💀💀💀",
-          description: "Przyjacielski mecz w sobotę",
-          location: "Orlik Centrum",
-          date: "2025-06-01T14:00:00Z",
-          createdAt: "2025-05-20T10:00:00Z",
-        },
-        {
-          id: 2,
-          title: "Turniej lokalny",
-          description: "Zawody o puchar burmistrza",
-          location: "Stadion miejski",
-          date: "2025-06-15T16:30:00Z",
-          createdAt: "2025-05-22T15:30:00Z",
-        },
-      ];
-
-      setMatches(mockMatches);
+      // Fetch user's created matches
+      const userMatches = await getUserCreatedMatches(token);
+      setMatches(userMatches);
 
       // Fetch participant counts for each match
       const counts = {};
-      for (const match of mockMatches) {
+      for (const match of userMatches) {
         try {
-          // Replace with actual API call
-          // const matchParticipants = await getMatchParticipants(match.id, token)
-          // counts[match.id] = matchParticipants.length
-          counts[match.id] = Math.floor(Math.random() * 20) + 1; // Mock data
+          const matchParticipants = await getMatchParticipants(match.id, token);
+          counts[match.id] = matchParticipants.length;
         } catch (err) {
           console.error(
             `Błąd pobierania uczestników dla meczu ${match.id}:`,
@@ -111,7 +95,7 @@ const ManageMatches = () => {
       setParticipantCounts(counts);
     } catch (error) {
       console.error("Błąd podczas pobierania meczów:", error);
-      setError("Nie udało się pobrać listy meczów");
+      setError(error.message || "Nie udało się pobrać listy meczów");
     } finally {
       setLoading(false);
     }
@@ -178,12 +162,17 @@ const ManageMatches = () => {
         date: matchDateTime.toISOString(),
       };
 
-      // Replace with actual API call
+      // Call API to update match
+      const updatedMatch = await updateMatch(
+        editingMatch.id,
+        updateData,
+        token
+      );
 
       // Update local state
       setMatches((prevMatches) =>
         prevMatches.map((match) =>
-          match.id === editingMatch.id ? { ...match, ...updateData } : match
+          match.id === editingMatch.id ? updatedMatch : match
         )
       );
 
@@ -191,6 +180,7 @@ const ManageMatches = () => {
       setEditModalOpen(false);
       setEditingMatch(null);
     } catch (error) {
+      console.error("Błąd podczas aktualizacji meczu:", error);
       setError(error.message || "Wystąpił błąd podczas aktualizacji meczu");
     } finally {
       setEditLoading(false);
@@ -209,17 +199,26 @@ const ManageMatches = () => {
       setDeleteLoading(true);
       const token = localStorage.getItem("authToken");
 
-      // Replace with actual API call
-      // await deleteMatch(matchToDelete.id, token)
+      // Call API to delete match
+      await deleteMatch(matchToDelete.id, token);
 
+      // Update local state
       setMatches((prevMatches) =>
         prevMatches.filter((match) => match.id !== matchToDelete.id)
       );
+
+      // Remove participant count for deleted match
+      setParticipantCounts((prevCounts) => {
+        const newCounts = { ...prevCounts };
+        delete newCounts[matchToDelete.id];
+        return newCounts;
+      });
 
       setSuccess("Mecz został pomyślnie usunięty!");
       setDeleteModalOpen(false);
       setMatchToDelete(null);
     } catch (error) {
+      console.error("Błąd podczas usuwania meczu:", error);
       setError(error.message || "Wystąpił błąd podczas usuwania meczu");
     } finally {
       setDeleteLoading(false);
@@ -231,22 +230,15 @@ const ManageMatches = () => {
     if (!token) return;
 
     try {
-      // Replace with actual API call
-      // const participants = await getMatchParticipants(matchId, token)
+      // Call API to get match participants
+      const participants = await getMatchParticipants(matchId, token);
 
-      // Mock data
-      const mockParticipants = [
-        { id: 1, User: { username: "Jan Kowalski" }, position: "atak" },
-        { id: 2, User: { username: "Anna Nowak" }, position: "pomoc" },
-        { id: 3, User: { username: "Piotr Wiśniewski" }, position: "obrona" },
-      ];
-
-      setCurrentParticipants(mockParticipants);
+      setCurrentParticipants(participants);
       setCurrentMatchTitle(matchTitle);
       setParticipantsModalOpen(true);
     } catch (error) {
       console.error("Nie udało się pobrać uczestników:", error);
-      setError("Nie udało się pobrać listy uczestników");
+      setError(error.message || "Nie udało się pobrać listy uczestników");
     }
   };
 
@@ -257,6 +249,21 @@ const ManageMatches = () => {
       [name]: value,
     }));
   };
+
+  // Clear success/error messages after 5 seconds
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => setSuccess(""), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [success]);
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(""), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
 
   return (
     <div className="flex flex-col min-h-screen bg-black">
