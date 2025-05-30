@@ -73,7 +73,7 @@ const ManageMatches = () => {
       const mockMatches = [
         {
           id: 1,
-          title: "Mecz piłki nożnej",
+          title: "simba💀💀💀",
           description: "Przyjacielski mecz w sobotę",
           location: "Orlik Centrum",
           date: "2025-06-01T14:00:00Z",
