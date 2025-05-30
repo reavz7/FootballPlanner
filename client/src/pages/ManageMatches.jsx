@@ -179,7 +179,6 @@ const ManageMatches = () => {
       };
 
       // Replace with actual API call
-      // await updateMatch(editingMatch.id, updateData, token)
 
       // Update local state
       setMatches((prevMatches) =>
@@ -391,7 +390,7 @@ const ManageMatches = () => {
 
       {/* Edit Modal */}
       {editModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 p-4 bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/30 backdrop-blur-sm">
           <div className="bg-gray-900 rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-lg">
             <div className="flex justify-between items-center p-6 border-b border-gray-800">
               <h2 className="text-white text-2xl font-semibold">Edytuj mecz</h2>
@@ -494,7 +493,7 @@ const ManageMatches = () => {
                 <button
                   type="submit"
                   disabled={editLoading}
-                  className="px-6 py-3 bg-yellow-400 text-black rounded-lg font-medium hover:bg-yellow-500 transition-colors disabled:opacity-50"
+                  className="px-6 py-3 bg-violet-400 text-black rounded-lg font-medium hover:bg-violet-500 transition-colors disabled:opacity-50"
                 >
                   {editLoading ? "Aktualizowanie..." : "Zaktualizuj mecz"}
                 </button>
@@ -506,7 +505,7 @@ const ManageMatches = () => {
 
       {/* Delete Confirmation Modal */}
       {deleteModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 p-4 bg-black bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center z-50 p-4 bg-black/30 backdrop-blur-sm">
           <div className="bg-gray-900 rounded-lg w-full max-w-md shadow-lg">
             <div className="p-6">
               <div className="flex items-center gap-4 mb-4">

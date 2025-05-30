@@ -1,19 +1,19 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API_URL = 'http://localhost:5000'; 
+const API_URL = "http://localhost:5000";
 
 // Rejestracja użytkownika
-export async function registerUser(data) {  
+export async function registerUser(data) {
   try {
-    const response = await axios.post(`${API_URL}/users/register`, data);       
+    const response = await axios.post(`${API_URL}/users/register`, data);
     return response.data; // zawiera token, user i message
   } catch (error) {
     if (error.response) {
       // Błąd odpowiedzi serwera
-      throw new Error(error.response.data.message || 'Błąd rejestracji');
+      throw new Error(error.response.data.message || "Błąd rejestracji");
     } else {
       // Inny błąd (np. brak połączenia)
-      throw new Error('Brak połączenia z serwerem');
+      throw new Error("Brak połączenia z serwerem");
     }
   }
 }
@@ -25,9 +25,9 @@ export async function loginUser(data) {
     return response.data; // token, user, message
   } catch (error) {
     if (error.response) {
-      throw new Error(error.response.data.message || 'Błąd logowania');
+      throw new Error(error.response.data.message || "Błąd logowania");
     } else {
-      throw new Error('Brak połączenia z serwerem');
+      throw new Error("Brak połączenia z serwerem");
     }
   }
 }
@@ -36,15 +36,17 @@ export async function getCurrentUser(token) {
   try {
     const response = await axios.get(`${API_URL}/users/me`, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
-    return response.data; 
+    return response.data;
   } catch (error) {
     if (error.response) {
-      throw new Error(error.response.data.message || 'Błąd pobierania użytkownika');
+      throw new Error(
+        error.response.data.message || "Błąd pobierania użytkownika"
+      );
     } else {
-      throw new Error('Brak połączenia z serwerem');
+      throw new Error("Brak połączenia z serwerem");
     }
   }
 }
@@ -53,12 +55,12 @@ export async function getCurrentUser(token) {
 export async function getUpcomingMatches() {
   try {
     const response = await axios.get(`${API_URL}/matches`);
-    return response.data; 
+    return response.data;
   } catch (error) {
     if (error.response) {
-      throw new Error(error.response.data.message || 'Błąd pobierania meczów');
+      throw new Error(error.response.data.message || "Błąd pobierania meczów");
     } else {
-      throw new Error('Brak połączenia z serwerem');
+      throw new Error("Brak połączenia z serwerem");
     }
   }
 }
@@ -68,15 +70,15 @@ export async function createMatch(data, token) {
   try {
     const response = await axios.post(`${API_URL}/matches`, data, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
-    return response.data; 
+    return response.data;
   } catch (error) {
     if (error.response) {
-      throw new Error(error.response.data.error || 'Błąd tworzenia meczu');
+      throw new Error(error.response.data.error || "Błąd tworzenia meczu");
     } else {
-      throw new Error('Brak połączenia z serwerem');
+      throw new Error("Brak połączenia z serwerem");
     }
   }
 }
@@ -86,12 +88,12 @@ export const getUserMatches = async (token) => {
   try {
     const response = await axios.get(`${API_URL}/matches/participating`, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
     return response.data;
   } catch (error) {
-    console.error('Błąd podczas pobierania meczów:', error);
+    console.error("Błąd podczas pobierania meczów:", error);
     throw error;
   }
 };
@@ -100,16 +102,16 @@ export const cancelMatchParticipation = async (token, matchId) => {
   try {
     const response = await axios.put(
       `${API_URL}/matches/${matchId}/cancel-participation`,
-      {}, 
+      {},
       {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
     return response.data;
   } catch (error) {
-    console.error('Błąd podczas anulowania uczestnictwa w meczu:', error);
+    console.error("Błąd podczas anulowania uczestnictwa w meczu:", error);
     throw error;
   }
 };
@@ -117,17 +119,22 @@ export const cancelMatchParticipation = async (token, matchId) => {
 // Pobierz uczestników konkretnego meczu
 export async function getMatchParticipants(matchId, token) {
   try {
-    const response = await axios.get(`${API_URL}/participants/match/${matchId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.get(
+      `${API_URL}/participants/match/${matchId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return response.data; // lista uczestników
   } catch (error) {
     if (error.response) {
-      throw new Error(error.response.data.error || 'Błąd pobierania uczestników');
+      throw new Error(
+        error.response.data.error || "Błąd pobierania uczestników"
+      );
     } else {
-      throw new Error('Brak połączenia z serwerem');
+      throw new Error("Brak połączenia z serwerem");
     }
   }
 }
@@ -147,9 +154,9 @@ export async function joinMatch(matchId, position, token) {
     return response.data; // wiadomość potwierdzająca i dane uczestnika
   } catch (error) {
     if (error.response) {
-      throw new Error(error.response.data.error || 'Błąd dołączania do meczu');
+      throw new Error(error.response.data.error || "Błąd dołączania do meczu");
     } else {
-      throw new Error('Brak połączenia z serwerem');
+      throw new Error("Brak połączenia z serwerem");
     }
   }
 }
@@ -165,9 +172,11 @@ export async function getAvailableMatches(userId, token) {
     return response.data; // lista dostępnych meczów
   } catch (error) {
     if (error.response) {
-      throw new Error(error.response.data.error || 'Błąd pobierania dostępnych meczów');
+      throw new Error(
+        error.response.data.error || "Błąd pobierania dostępnych meczów"
+      );
     } else {
-      throw new Error('Brak połączenia z serwerem');
+      throw new Error("Brak połączenia z serwerem");
     }
   }
 }
@@ -175,65 +184,77 @@ export async function getAvailableMatches(userId, token) {
 // Zmiana hasła
 export async function changePassword(currentPassword, newPassword, token) {
   try {
-    const response = await axios.put(`${API_URL}/users/change-password`, {
-      currentPassword,
-      newPassword
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const response = await axios.put(
+      `${API_URL}/users/change-password`,
+      {
+        currentPassword,
+        newPassword,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    });
+    );
     return response.data;
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Błąd zmiany hasła');
+    throw new Error(error.response?.data?.message || "Błąd zmiany hasła");
   }
 }
 
 // Zmiana emaila
 export async function changeEmail(newEmail, token) {
   try {
-    const response = await axios.put(`${API_URL}/users/change-email`, {
-      newEmail
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const response = await axios.put(
+      `${API_URL}/users/change-email`,
+      {
+        newEmail,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    });
+    );
     return response.data;
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Błąd zmiany emaila');
+    throw new Error(error.response?.data?.message || "Błąd zmiany emaila");
   }
 }
 
 // Zmiana pseudonimu
 export async function changeUsername(newUsername, token) {
   try {
-    const response = await axios.put(`${API_URL}/users/change-username`, {
-      newUsername
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`
+    const response = await axios.put(
+      `${API_URL}/users/change-username`,
+      {
+        newUsername,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    });
+    );
     return response.data;
   } catch (error) {
-    throw new Error(error.response?.data?.message || 'Błąd zmiany pseudonimu');
+    throw new Error(error.response?.data?.message || "Błąd zmiany pseudonimu");
   }
 }
-
-
 
 // 1. Pobierz przyszłe mecze stworzone przez zalogowanego użytkownika
 export async function getUserCreatedMatches(token) {
   try {
     const response = await axios.get(`${API_URL}/matches/usercreations`, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
     return response.data; // lista meczów
   } catch (error) {
-    throw new Error(error.response?.data?.error || 'Błąd pobierania meczów użytkownika');
+    throw new Error(
+      error.response?.data?.error || "Błąd pobierania meczów użytkownika"
+    );
   }
 }
 
@@ -242,12 +263,12 @@ export async function updateMatch(matchId, data, token) {
   try {
     const response = await axios.put(`${API_URL}/matches/${matchId}`, data, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
     return response.data; // zaktualizowany mecz
   } catch (error) {
-    throw new Error(error.response?.data?.error || 'Błąd edycji meczu');
+    throw new Error(error.response?.data?.error || "Błąd edycji meczu");
   }
 }
 
@@ -256,11 +277,11 @@ export async function deleteMatch(matchId, token) {
   try {
     const response = await axios.delete(`${API_URL}/matches/${matchId}`, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
     return response.data; // potwierdzenie usunięcia
   } catch (error) {
-    throw new Error(error.response?.data?.error || 'Błąd usuwania meczu');
+    throw new Error(error.response?.data?.error || "Błąd usuwania meczu");
   }
 }

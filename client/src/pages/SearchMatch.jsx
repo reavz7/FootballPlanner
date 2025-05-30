@@ -291,7 +291,7 @@ const SearchMatch = () => {
 
       {/* Position Selection Modal */}
       {showPositionModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/30 backdrop-blur-sm">
           <div className="bg-gray-900 rounded-lg p-6 max-w-md w-full">
             <h3 className="text-white text-xl font-semibold mb-4">
               Wybierz swoją pozycję
