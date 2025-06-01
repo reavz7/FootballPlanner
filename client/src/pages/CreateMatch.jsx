@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -27,13 +27,7 @@ const CreateMatch = () => {
   const [isParticipant, setIsParticipant] = useState(false);
   const [selectedPosition, setSelectedPosition] = useState("");
 
-  useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      setError("Musisz być zalogowany, aby utworzyć mecz!");
-      navigate("/login");
-    }
-  }, [navigate]);
+    
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -69,11 +63,6 @@ const CreateMatch = () => {
       setLoading(true);
       const token = localStorage.getItem("authToken");
 
-      if (!token) {
-        setError("Brak autoryzacji. Zaloguj się ponownie.");
-        navigate("/login");
-        return;
-      }
 
       const dateTimeString = `${selectedDate}T${selectedTime}:00`;
       const matchDateTime = new Date(dateTimeString);

@@ -1,14 +1,8 @@
+import React from "react";
+import Navbar from "../components/Navbar";
+import Hero from "../components/Hero";
+import Footer from "../components/Footer";
 const Home = () => {
-  const navigate = useNavigate();
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      navigate("/login");
-    }
-  }, [navigate]);
-
   return (
     <>
       <Navbar />
@@ -17,3 +11,5 @@ const Home = () => {
     </>
   );
 };
+
+export default Home;

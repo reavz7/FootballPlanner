@@ -6,13 +6,13 @@ const API_URL = "http://localhost:5000";
 export async function registerUser(data) {
   try {
     const response = await axios.post(`${API_URL}/users/register`, data);
-    return response.data; // zawiera token, user i message
+    return response.data; 
   } catch (error) {
     if (error.response) {
-      // Błąd odpowiedzi serwera
+      
       throw new Error(error.response.data.message || "Błąd rejestracji");
     } else {
-      // Inny błąd (np. brak połączenia)
+      
       throw new Error("Brak połączenia z serwerem");
     }
   }
@@ -22,7 +22,7 @@ export async function registerUser(data) {
 export async function loginUser(data) {
   try {
     const response = await axios.post(`${API_URL}/users/login`, data);
-    return response.data; // token, user, message
+    return response.data; 
   } catch (error) {
     if (error.response) {
       throw new Error(error.response.data.message || "Błąd logowania");
@@ -127,7 +127,7 @@ export async function getMatchParticipants(matchId, token) {
         },
       }
     );
-    return response.data; // lista uczestników
+    return response.data; 
   } catch (error) {
     if (error.response) {
       throw new Error(
@@ -151,7 +151,7 @@ export async function joinMatch(matchId, position, token) {
         },
       }
     );
-    return response.data; // wiadomość potwierdzająca i dane uczestnika
+    return response.data;
   } catch (error) {
     if (error.response) {
       throw new Error(error.response.data.error || "Błąd dołączania do meczu");
@@ -169,7 +169,7 @@ export async function getAvailableMatches(userId, token) {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data; // lista dostępnych meczów
+    return response.data;
   } catch (error) {
     if (error.response) {
       throw new Error(
@@ -250,7 +250,7 @@ export async function getUserCreatedMatches(token) {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data; // lista meczów
+    return response.data;
   } catch (error) {
     throw new Error(
       error.response?.data?.error || "Błąd pobierania meczów użytkownika"
@@ -266,7 +266,7 @@ export async function updateMatch(matchId, data, token) {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data; // zaktualizowany mecz
+    return response.data; 
   } catch (error) {
     throw new Error(error.response?.data?.error || "Błąd edycji meczu");
   }
@@ -280,7 +280,7 @@ export async function deleteMatch(matchId, token) {
         Authorization: `Bearer ${token}`,
       },
     });
-    return response.data; // potwierdzenie usunięcia
+    return response.data; 
   } catch (error) {
     throw new Error(error.response?.data?.error || "Błąd usuwania meczu");
   }

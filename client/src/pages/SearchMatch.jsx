@@ -34,39 +34,33 @@ const SearchMatch = () => {
   const [participants, setParticipants] = useState([]);
   const [participantCounts, setParticipantCounts] = useState({});
 
-  useEffect(() => {
-    const authToken = localStorage.getItem("authToken");
-    const userDetails = localStorage.getItem("user");
+useEffect(() => {
+  const authToken = localStorage.getItem("authToken");
+  const userDetails = localStorage.getItem("user");
 
-    if (!authToken) {
-      setError("Musisz być zalogowany, aby przeglądać dostępne mecze!");
-      navigate("/login");
-      return;
+  setToken(authToken);
+
+  if (userDetails) {
+    try {
+      const user = JSON.parse(userDetails);
+      setUserId(user.id);
+      fetchAvailableMatches(user.id, authToken);
+    } catch (err) {
+      setError("Błąd przetwarzania danych użytkownika");
+      console.error("Błąd przetwarzania danych użytkownika:", err);
     }
+  } else {
+    setError("Brak danych użytkownika");
+  }
+}, []);
 
-    setToken(authToken);
-
-    if (userDetails) {
-      try {
-        const user = JSON.parse(userDetails);
-        setUserId(user.id);
-        fetchAvailableMatches(user.id, authToken);
-      } catch (err) {
-        setError("Błąd przetwarzania danych użytkownika");
-        console.error("Błąd przetwarzania danych użytkownika:", err);
-      }
-    } else {
-      setError("Brak danych użytkownika");
-    }
-  }, [navigate]);
-
-  // Fetch available matches function
+  
   const fetchAvailableMatches = async (uid, authToken) => {
     try {
       setLoading(true);
       const availableMatches = await getAvailableMatches(uid, authToken);
 
-      // Format data for display
+      
       const formattedMatches = availableMatches.map((match) => ({
         id: match.id,
         name: match.title,
@@ -84,7 +78,7 @@ const SearchMatch = () => {
       setMatches(formattedMatches);
       setFilteredMatches(formattedMatches);
 
-      // Fetch participant counts for each match
+      
       const counts = {};
       for (const match of formattedMatches) {
         try {
@@ -150,7 +144,7 @@ const SearchMatch = () => {
     }
   };
 
-  // Function to view match details
+  
   const handleViewDetails = async (matchId) => {
     try {
       setLoading(true);
@@ -289,7 +283,7 @@ const SearchMatch = () => {
         </div>
       </main>
 
-      {/* Position Selection Modal */}
+      {/* modal do wyboru pozycji */}
       {showPositionModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/30 backdrop-blur-sm">
           <div className="bg-gray-900 rounded-lg p-6 max-w-md w-full">
@@ -333,7 +327,7 @@ const SearchMatch = () => {
         </div>
       )}
 
-      {/* Match Details Modal*/}
+      {/* detale meczu modal*/}
       {showDetailsModal && matchDetails && (
         <MatchDetailsModal
           match={matchDetails}

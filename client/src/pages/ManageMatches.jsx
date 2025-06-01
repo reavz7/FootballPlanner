@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ParticipantsModal from "../components/ParticipantsModal";
@@ -26,7 +25,6 @@ import {
 } from "../services/api";
 
 const ManageMatches = () => {
-  const navigate = useNavigate();
   const [matches, setMatches] = useState([]);
   const [participantCounts, setParticipantCounts] = useState({});
   const [loading, setLoading] = useState(true);
@@ -56,19 +54,12 @@ const ManageMatches = () => {
   const [editLoading, setEditLoading] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    if (!token) {
-      setError("Musisz być zalogowany!");
-      navigate("/login");
-      return;
-    }
     fetchUserMatches();
-  }, [navigate]);
+  }, []);
 
   const fetchUserMatches = async () => {
     const token = localStorage.getItem("authToken");
-    if (!token) return;
-
+    
     try {
       setLoading(true);
       setError("");
@@ -227,7 +218,6 @@ const ManageMatches = () => {
 
   const handleShowParticipants = async (matchId, matchTitle) => {
     const token = localStorage.getItem("authToken");
-    if (!token) return;
 
     try {
       // Call API to get match participants

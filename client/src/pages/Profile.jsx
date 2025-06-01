@@ -18,14 +18,9 @@ const Profile = () => {
   const [currentPassword, setCurrentPassword] = useState("")
   const [newPassword, setNewPassword] = useState("")
 
-  const token = localStorage.getItem("authToken")
-
   useEffect(() => {
     const fetchUser = async () => {
-      if (!token) {
-        setError("Nie jesteś zalogowany!")
-        return
-      }
+      const token = localStorage.getItem("authToken")
 
       try {
         const userData = await getCurrentUser(token)
@@ -36,10 +31,12 @@ const Profile = () => {
     }
 
     fetchUser()
-  }, [token])
+  }, [])
 
   const handleEmailChange = async (e) => {
     e.preventDefault()
+    const token = localStorage.getItem("authToken")
+    
     try {
       const res = await changeEmail(newEmail, token)
       setSuccessMessage(res.message)
@@ -55,6 +52,8 @@ const Profile = () => {
 
   const handleUsernameChange = async (e) => {
     e.preventDefault()
+    const token = localStorage.getItem("authToken")
+    
     try {
       const res = await changeUsername(newUsername, token)
       setSuccessMessage(res.message)
@@ -70,6 +69,8 @@ const Profile = () => {
 
   const handlePasswordChange = async (e) => {
     e.preventDefault()
+    const token = localStorage.getItem("authToken")
+    
     try {
       const res = await changePassword(currentPassword, newPassword, token)
       setSuccessMessage(res.message)
@@ -104,7 +105,7 @@ const Profile = () => {
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* User Info Card */}
+              {/* info o userze */}
               <div className="h-full">
                 <div className="bg-gray-800 rounded-xl p-8 text-white shadow-xl h-full border border-gray-700 flex flex-col">
                   <h2 className="text-xl font-semibold mb-6 text-violet-400 flex items-center">
@@ -132,7 +133,7 @@ const Profile = () => {
                 </div>
               </div>
 
-              {/* Forms Card */}
+              {/* panel sterowaina */}
               <div className="h-full">
                 <div className="bg-gray-800 rounded-xl p-8 text-white shadow-xl h-full border border-gray-700">
                   <div className="space-y-6">

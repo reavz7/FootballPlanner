@@ -15,14 +15,13 @@ const MatchHistory = () => {
   const [currentParticipants, setCurrentParticipants] = useState([])
   const [currentMatchTitle, setCurrentMatchTitle] = useState("")
   
-  // Nowe stany dla filtrów
+  
   const [showCompleted, setShowCompleted] = useState(true)
   const [showUpcoming, setShowUpcoming] = useState(true)
 
   useEffect(() => {
     const fetchMatches = async () => {
       const token = localStorage.getItem("authToken")
-      if (!token) return
 
       try {
         setLoading(true)
@@ -36,7 +35,7 @@ const MatchHistory = () => {
 
         setMatches(normalizedMatches)
 
-        // Pobierz liczbę uczestników dla każdego meczu
+        
         const counts = {}
         for (const match of normalizedMatches) {
           try {
@@ -59,7 +58,7 @@ const MatchHistory = () => {
     fetchMatches()
   }, [])
 
-  // Funkcja filtrowania meczów
+  
   const getFilteredMatches = () => {
     return matches.filter(match => {
       if (!showCompleted && match.isPast) return false
@@ -110,7 +109,6 @@ const MatchHistory = () => {
 
   const handleCancelParticipation = async (matchId) => {
     const token = localStorage.getItem("authToken")
-    if (!token) return
 
     try {
       await cancelMatchParticipation(token, matchId)
@@ -123,7 +121,6 @@ const MatchHistory = () => {
 
   const handleShowParticipants = async (matchId, matchTitle) => {
     const token = localStorage.getItem("authToken")
-    if (!token) return
 
     try {
       const participants = await getMatchParticipants(matchId, token)
