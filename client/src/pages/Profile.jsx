@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react"
 import Navbar from "../components/Navbar"
 import Footer from "../components/Footer"
-import ErrorAlert from "../components/ErrorAlert"
-import SuccessAlert from "../components/SuccessAlert"
+import AlertsSection from "../components/AlertsSection"
+import ProfileInfo from "../components/ProfileInfo"
+import ProfileForm from "../components/ProfileForm"
 import { getCurrentUser, changeEmail, changeUsername, changePassword } from "../services/api"
-import { UserCircle, Mail, Key } from "lucide-react"
 
 const Profile = () => {
   const [user, setUser] = useState(null)
@@ -97,134 +97,24 @@ const Profile = () => {
               </div>
             </header>
 
-            {(error || successMessage) && (
-              <div className="max-w-xl mx-auto mb-8">
-                {error && <ErrorAlert text={error} />}
-                {successMessage && <SuccessAlert text={successMessage} />}
-              </div>
-            )}
+            <AlertsSection error={error} successMessage={successMessage} />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* info o userze */}
-              <div className="h-full">
-                <div className="bg-gray-800 rounded-xl p-8 text-white shadow-xl h-full border border-gray-700 flex flex-col">
-                  <h2 className="text-xl font-semibold mb-6 text-violet-400 flex items-center">
-                    <UserCircle className="mr-2" size={24} />
-                    Informacje o profilu
-                  </h2>
-
-                  {user ? (
-                    <div className="space-y-4 flex-grow">
-                      <div className="bg-gray-900/50 p-4 rounded-lg">
-                        <p className="text-gray-400 text-sm mb-1">Pseudonim</p>
-                        <p className="text-lg font-medium">{user.username}</p>
-                      </div>
-
-                      <div className="bg-gray-900/50 p-4 rounded-lg">
-                        <p className="text-gray-400 text-sm mb-1">Email</p>
-                        <p className="text-lg font-medium">{user.email}</p>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex-grow flex items-center justify-center">
-                      <p className="text-gray-400 italic">Ładowanie danych...</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* panel sterowaina */}
-              <div className="h-full">
-                <div className="bg-gray-800 rounded-xl p-8 text-white shadow-xl h-full border border-gray-700">
-                  <div className="space-y-6">
-                    {/* Email Form */}
-                    <form onSubmit={handleEmailChange} className="space-y-3">
-                      <h3 className="text-lg font-medium text-violet-400 flex items-center">
-                        <Mail className="mr-2" size={20} />
-                        Zmień Email
-                      </h3>
-                      <div>
-                        <input
-                          type="email"
-                          value={newEmail}
-                          onChange={(e) => setNewEmail(e.target.value)}
-                          className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 focus:outline-none transition"
-                          placeholder="Nowy adres email"
-                          required
-                        />
-                      </div>
-                      <button
-                        type="submit"
-                        className="w-full bg-violet-600 hover:bg-violet-700 px-4 py-3 rounded-lg text-white font-medium transition-colors duration-200 flex justify-center items-center"
-                      >
-                        Aktualizuj Email
-                      </button>
-                    </form>
-
-                    <div className="border-t border-gray-700 my-4"></div>
-
-                    {/* Username Form */}
-                    <form onSubmit={handleUsernameChange} className="space-y-3">
-                      <h3 className="text-lg font-medium text-violet-400 flex items-center">
-                        <UserCircle className="mr-2" size={20} />
-                        Zmień Pseudonim
-                      </h3>
-                      <div>
-                        <input
-                          type="text"
-                          value={newUsername}
-                          onChange={(e) => setNewUsername(e.target.value)}
-                          className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 focus:outline-none transition"
-                          placeholder="Nowy pseudonim"
-                          required
-                        />
-                      </div>
-                      <button
-                        type="submit"
-                        className="w-full bg-violet-600 hover:bg-violet-700 px-4 py-3 rounded-lg text-white font-medium transition-colors duration-200 flex justify-center items-center"
-                      >
-                        Aktualizuj Pseudonim
-                      </button>
-                    </form>
-
-                    <div className="border-t border-gray-700 my-4"></div>
-
-                    {/* Password Form */}
-                    <form onSubmit={handlePasswordChange} className="space-y-3">
-                      <h3 className="text-lg font-medium text-violet-400 flex items-center">
-                        <Key className="mr-2" size={20} />
-                        Zmień Hasło
-                      </h3>
-                      <div>
-                        <input
-                          type="password"
-                          value={currentPassword}
-                          onChange={(e) => setCurrentPassword(e.target.value)}
-                          className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 focus:outline-none transition mb-3"
-                          placeholder="Obecne hasło"
-                          required
-                        />
-                      </div>
-                      <div>
-                        <input
-                          type="password"
-                          value={newPassword}
-                          onChange={(e) => setNewPassword(e.target.value)}
-                          className="w-full p-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 focus:outline-none transition"
-                          placeholder="Nowe hasło"
-                          required
-                        />
-                      </div>
-                      <button
-                        type="submit"
-                        className="w-full bg-violet-600 hover:bg-violet-700 px-4 py-3 rounded-lg text-white font-medium transition-colors duration-200 flex justify-center items-center"
-                      >
-                        Aktualizuj Hasło
-                      </button>
-                    </form>
-                  </div>
-                </div>
-              </div>
+              <ProfileInfo user={user} />
+              
+              <ProfileForm
+                newEmail={newEmail}
+                setNewEmail={setNewEmail}
+                newUsername={newUsername}
+                setNewUsername={setNewUsername}
+                currentPassword={currentPassword}
+                setCurrentPassword={setCurrentPassword}
+                newPassword={newPassword}
+                setNewPassword={setNewPassword}
+                onEmailChange={handleEmailChange}
+                onUsernameChange={handleUsernameChange}
+                onPasswordChange={handlePasswordChange}
+              />
             </div>
           </div>
         </main>
