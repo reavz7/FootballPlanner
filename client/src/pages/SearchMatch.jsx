@@ -256,13 +256,13 @@ useEffect(() => {
 
                       <div className="mt-4 md:mt-0 md:ml-6 flex items-between justify-center flex-col gap-4">
                         <button
-                          className="p-4  bg-blue-500"
+                          className="flex items-center gap-1 bg-blue-900/60 hover:bg-blue-800 text-white px-5 py-4 rounded-lg text-sm font-medium transition-colors cursor-pointer"
                           onClick={() => handleJoinMatch(match.id)}
                         >
                           DOŁĄCZ DO MECZU
                         </button>
                         <button
-                          className="p-4 bg-red-400"
+                          className="flex items-center gap-1 bg-violet-900/60 hover:via-violet-700 text-white px-5 py-4 rounded-lg text-sm font-medium transition-colors cursor-pointer"
                           onClick={() => handleViewDetails(match.id)}
                         >
                           SZCZEGÓŁY
