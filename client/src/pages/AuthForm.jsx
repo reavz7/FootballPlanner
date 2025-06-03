@@ -43,6 +43,8 @@ export default function AuthForm() {
       }
       localStorage.setItem('authToken', response.token)
       localStorage.setItem('user', JSON.stringify(response.user))
+      console.log(localStorage.setItem('user', JSON.stringify(response.user)));
+  
       navigate('/')
     } catch (error) {
       setError(error.message)

@@ -43,14 +43,14 @@ const MatchCard = ({
           <div className="flex gap-2">
             <button
               onClick={() => onEdit(match)}
-              className="flex items-center gap-1 bg-blue-900/60 hover:bg-blue-800 text-blue-300 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+              className="flex items-center gap-1 bg-blue-900/60 hover:bg-blue-800 text-blue-300 px-3 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer"
             >
               <Edit size={16} />
               <span>Edytuj</span>
             </button>
             <button
               onClick={() => onDelete(match)}
-              className="flex items-center gap-1 bg-red-900/60 hover:bg-red-800 text-red-300 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+              className="flex items-center gap-1 bg-red-900/60 hover:bg-red-800 text-red-300 px-3 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer"
             >
               <Trash2 size={16} />
               <span>Usuń</span>
