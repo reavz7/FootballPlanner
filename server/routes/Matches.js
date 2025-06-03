@@ -199,7 +199,7 @@ router.get("/available/:userId", verifyToken, async (req, res) => {
     const { userId } = req.params;
     const now = new Date();
 
-    // Pobieramy mecze, w których user już jest (potwierdzony)
+    
     const joinedMatchIds = await Participant.findAll({
       where: {
         userId,
@@ -210,10 +210,10 @@ router.get("/available/:userId", verifyToken, async (req, res) => {
 
     const joinedIds = joinedMatchIds.map((p) => p.matchId);
 
-    // Szukamy dostępnych meczów, które:
-    // - nie są w joinedIds
-    // - mają datę w przyszłości
-    // - mają mniej niż 30 potwierdzonych uczestników
+    
+    
+    
+    
     const availableMatches = await Match.findAll({
       where: {
         id: { [Op.notIn]: joinedIds.length > 0 ? joinedIds : [0] },
@@ -228,8 +228,8 @@ router.get("/available/:userId", verifyToken, async (req, res) => {
         {
           model: Participant,
           attributes: [],
-          where: { isConfirmed: true },  // <<< tutaj tylko potwierdzeni
-          required: false,               // żeby mecz bez uczestników też się wyświetlił
+          where: { isConfirmed: true },  
+          required: false,               
         }
       ],
       group: ['Match.id'],
@@ -248,7 +248,7 @@ router.get("/available/:userId", verifyToken, async (req, res) => {
 });
 
 
-// 1. Pobierz przyszłe mecze stworzone przez zalogowanego użytkownika
+
 router.get("/usercreations", verifyToken, async (req, res) => {
   try {
     const now = new Date();
@@ -266,7 +266,7 @@ router.get("/usercreations", verifyToken, async (req, res) => {
   }
 });
 
-// 2. Edytuj mecz (tylko właściciel)
+
 router.put("/:matchId", verifyToken, async (req, res) => {
   try {
     const { matchId } = req.params;
@@ -283,7 +283,7 @@ router.put("/:matchId", verifyToken, async (req, res) => {
   }
 });
 
-// 3. Usuń mecz (tylko właściciel)
+
 router.delete("/:matchId", verifyToken, async (req, res) => {
   try {
     const { matchId } = req.params;

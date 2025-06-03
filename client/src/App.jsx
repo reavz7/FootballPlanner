@@ -8,7 +8,6 @@ import MatchHistory from "./pages/MatchHistory";
 import SearchMatch from "./pages/SearchMatch";
 import ManageMatches from "./pages/ManageMatches";
 
-// Komponent zabezpieczający route
 function PrivateRoute({ children }) {
   const token = localStorage.getItem("authToken");
   return token ? children : <Navigate to="/auth" />;

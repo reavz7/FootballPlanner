@@ -39,7 +39,7 @@ router.post("/", verifyToken, async (req, res) => {
       return res.status(400).json({ error: "Brakuje matchId w body" });
     }
 
-    // Sprawdź ile jest już potwierdzonych uczestników w meczu
+    
     const confirmedCount = await Participant.count({
       where: {
         matchId,
@@ -51,7 +51,7 @@ router.post("/", verifyToken, async (req, res) => {
       return res.status(400).json({ error: "Mecz jest już pełny, zapis się nie powiódł" });
     }
 
-    // Sprawdź czy użytkownik już jest w meczu
+    
     const existing = await Participant.findOne({ where: { userId, matchId } });
 
     if (existing) {
@@ -59,7 +59,7 @@ router.post("/", verifyToken, async (req, res) => {
         return res.status(400).json({ error: "Użytkownik już dołączył do tego meczu" });
       }
 
-      // Potwierdź uczestnictwo i zaktualizuj pozycję, jeśli podano
+      
       existing.isConfirmed = true;
       if (position) existing.position = position;
       await existing.save();
@@ -67,7 +67,7 @@ router.post("/", verifyToken, async (req, res) => {
       return res.status(200).json({ message: "Powrócono do meczu", participant: existing });
     }
 
-    // Dodaj nowego uczestnika
+    
     const participant = await Participant.create({
       userId,
       matchId,

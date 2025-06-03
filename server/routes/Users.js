@@ -14,13 +14,13 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'Wszystkie pola są wymagane' });
     }
 
-    // Sprawdzenie czy email już istnieje
+    
     const existingEmailUser = await User.findOne({ where: { email } });
     if (existingEmailUser) {
       return res.status(400).json({ message: 'Użytkownik z takim adresem email już istnieje' });
     }
 
-    // Sprawdzenie czy pseudonim już istnieje
+    
     const existingUsernameUser = await User.findOne({ where: { username } });
     if (existingUsernameUser) {
       return res.status(400).json({ message: 'Pseudonim jest już zajęty' });
