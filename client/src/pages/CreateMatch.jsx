@@ -101,7 +101,7 @@ const CreateMatch = () => {
   return (
     <>
       <Navbar />
-      <div className="pt-42 bg-black min-h-screen">
+      <div className="pt-42 bg-black min-h-screen ">
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-white text-4xl text-center uppercase font-medium mb-2">
             Stwórz mecz, zacznij wygrywać.

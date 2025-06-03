@@ -97,7 +97,7 @@ const MatchHistory = () => {
     <div className="flex flex-col min-h-screen bg-black">
       <Navbar />
 
-      <main className="flex-grow py-16 px-4 pt-42">
+      <main className="flex-grow py-16 px-4 pt-42 min-h-screen">
         <div className="max-w-6xl mx-auto">
           <header className="text-center mb-10">
             <h1 className="text-white text-4xl uppercase font-medium mb-2">Twoje mecze</h1>
