@@ -91,6 +91,7 @@ export const getUserMatches = async (token) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log(response.data)
     return response.data;
   } catch (error) {
     console.error("Błąd podczas pobierania meczów:", error);

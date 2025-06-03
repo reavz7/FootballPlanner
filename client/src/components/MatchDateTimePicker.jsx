@@ -9,7 +9,7 @@ const MatchDateTimePicker = ({ selectedDate, setSelectedDate, selectedTime, setS
     if (!calendar) return
 
     const onDateChange = (e) => {
-      const date = e.target.value || e.detail // dostosuj wg eventu
+      const date = e.target.value || e.detail 
       if (!date) return
 
       const today = new Date()
@@ -24,7 +24,7 @@ const MatchDateTimePicker = ({ selectedDate, setSelectedDate, selectedTime, setS
         setSelectedDate("")
       } else {
         setSelectedDate(date)
-        setError("") // Wyczyść błędy po prawidłowym wyborze daty
+        setError("") 
       }
     }
 
