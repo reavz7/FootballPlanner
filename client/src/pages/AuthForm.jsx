@@ -1,75 +1,75 @@
-"use client"
+"use client";
 
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { registerUser, loginUser } from '../services/api'
-import { Mail, Lock, User, Loader2, LogIn, UserPlus } from 'lucide-react'
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { registerUser, loginUser } from "../services/api";
+import { Mail, Lock, User, Loader2, LogIn, UserPlus } from "lucide-react";
 
 export default function AuthForm() {
-  const [isLogin, setIsLogin] = useState(true)
+  const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-  })
-  const [error, setError] = useState('')
-  const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
+    username: "",
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData({ ...formData, [name]: value })
-  }
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
     try {
-      let response
-      
+      let response;
+
       if (isLogin) {
         response = await loginUser({
           email: formData.email,
-          password: formData.password
-        })
+          password: formData.password,
+        });
       } else {
         response = await registerUser({
           username: formData.username,
           email: formData.email,
-          password: formData.password
-        })
+          password: formData.password,
+        });
       }
-      localStorage.setItem('authToken', response.token)
-      localStorage.setItem('user', JSON.stringify(response.user))
-      console.log(localStorage.setItem('user', JSON.stringify(response.user)));
-  
-      navigate('/')
+      localStorage.setItem("authToken", response.token);
+      localStorage.setItem("user", JSON.stringify(response.user));
+      console.log(localStorage.setItem("user", JSON.stringify(response.user)));
+
+      navigate("/");
     } catch (error) {
-      setError(error.message)
+      setError(error.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const toggleForm = () => {
-    setIsLogin(!isLogin)
-    setError('')
-  }
+    setIsLogin(!isLogin);
+    setError("");
+  };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 p-4">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 p-4 ">
       <div className="w-full max-w-md overflow-hidden bg-white rounded-xl shadow-xl">
         {/* Header Section */}
         <div className="p-8 bg-gradient-to-r from-violet-500 to-gray-900 text-white">
           <h1 className="text-3xl font-bold">
-            {isLogin ? 'Witaj ponownie!' : 'Dołącz do nas'}
+            {isLogin ? "Witaj ponownie!" : "Dołącz do nas"}
           </h1>
           <p className="mt-2 opacity-90">
             {isLogin
-              ? 'Zaloguj się, aby kontynuować'
-              : 'Utwórz swoje konto w kilka sekund'}
+              ? "Zaloguj się, aby kontynuować"
+              : "Utwórz swoje konto w kilka sekund"}
           </p>
         </div>
 
@@ -84,7 +84,10 @@ export default function AuthForm() {
           <form className="space-y-5" onSubmit={handleSubmit}>
             {!isLogin && (
               <div className="space-y-2">
-                <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="username"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Nazwa użytkownika
                 </label>
                 <div className="relative">
@@ -106,7 +109,10 @@ export default function AuthForm() {
             )}
 
             <div className="space-y-2">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Adres email
               </label>
               <div className="relative">
@@ -127,7 +133,10 @@ export default function AuthForm() {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Hasło
               </label>
               <div className="relative">
@@ -180,12 +189,12 @@ export default function AuthForm() {
               className="text-sm text-violet-600 hover:text-violet-800 font-medium transition-colors duration-200"
             >
               {isLogin
-                ? 'Nie masz konta? Zarejestruj się'
-                : 'Masz już konto? Zaloguj się'}
+                ? "Nie masz konta? Zarejestruj się"
+                : "Masz już konto? Zaloguj się"}
             </button>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

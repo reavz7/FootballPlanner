@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Search } from "lucide-react";
 
-const FilterBar = ({ matches, onFilter }) => {
+const FilterBar = ({ matches, onFilter, participantCounts = {} }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterType, setFilterType] = useState("all");
   const [participantRange, setParticipantRange] = useState([0, 30]);
@@ -34,16 +34,24 @@ const FilterBar = ({ matches, onFilter }) => {
     if (term) {
       const lowercaseTerm = term.toLowerCase();
       filtered = filtered.filter((match) => {
-        if ((type === "name" || type === "all") && match.name?.toLowerCase().includes(lowercaseTerm)) return true;
-        if ((type === "location" || type === "all") && match.location?.toLowerCase().includes(lowercaseTerm)) return true;
+        if (
+          (type === "name" || type === "all") &&
+          match.name?.toLowerCase().includes(lowercaseTerm)
+        )
+          return true;
+        if (
+          (type === "location" || type === "all") &&
+          match.location?.toLowerCase().includes(lowercaseTerm)
+        )
+          return true;
         return false;
       });
     }
 
-    // Bezpieczne filtrowanie po uczestnikach (jeśli pole istnieje)
+    // TUTAJ JEST POPRAWKA - używamy participantCounts[match.id]
     filtered = filtered.filter((match) => {
-      const count = typeof match.participants === "number" ? match.participants : 0;
-      return count >= range[0] && count <= range[1];
+      const actualParticipants = participantCounts[match.id] || 0;
+      return actualParticipants >= range[0] && actualParticipants <= range[1];
     });
 
     onFilter(filtered);
@@ -68,19 +76,31 @@ const FilterBar = ({ matches, onFilter }) => {
 
           <div className="flex space-x-2">
             <button
-              className={`px-4 py-2 rounded-lg ${filterType === "all" ? "bg-white text-black" : "bg-gray-800 text-white"}`}
+              className={`px-4 py-2 rounded-lg ${
+                filterType === "all"
+                  ? "bg-white text-black"
+                  : "bg-gray-800 text-white"
+              }`}
               onClick={() => handleFilterTypeChange("all")}
             >
               Wszystkie
             </button>
             <button
-              className={`px-4 py-2 rounded-lg ${filterType === "name" ? "bg-white text-black" : "bg-gray-800 text-white"}`}
+              className={`px-4 py-2 rounded-lg ${
+                filterType === "name"
+                  ? "bg-white text-black"
+                  : "bg-gray-800 text-white"
+              }`}
               onClick={() => handleFilterTypeChange("name")}
             >
               Nazwa
             </button>
             <button
-              className={`px-4 py-2 rounded-lg ${filterType === "location" ? "bg-white text-black" : "bg-gray-800 text-white"}`}
+              className={`px-4 py-2 rounded-lg ${
+                filterType === "location"
+                  ? "bg-white text-black"
+                  : "bg-gray-800 text-white"
+              }`}
               onClick={() => handleFilterTypeChange("location")}
             >
               Lokalizacja
@@ -92,7 +112,10 @@ const FilterBar = ({ matches, onFilter }) => {
           <label className="text-white">Liczba uczestników:</label>
           <div className="flex flex-wrap gap-4">
             {participantOptions.map((option, idx) => (
-              <label key={idx} className="text-white flex items-center space-x-2">
+              <label
+                key={idx}
+                className="text-white flex items-center space-x-2"
+              >
                 <input
                   type="radio"
                   name="participantRange"

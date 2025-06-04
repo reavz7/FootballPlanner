@@ -69,13 +69,14 @@ const SearchMatch = () => {
           hour: "2-digit",
           minute: "2-digit",
         }),
-        maxParticipants: match.maxParticipants || 30,
+        maxParticipants: 30,
         createdBy: match.createdBy,
       }));
 
       setMatches(formattedMatches);
       setFilteredMatches(formattedMatches);
 
+      console.log(formattedMatches);
       const counts = {};
       for (const match of formattedMatches) {
         try {
@@ -194,8 +195,11 @@ const SearchMatch = () => {
           )}
 
           {/* Filter component */}
-          <FilterBar matches={matches} onFilter={handleFilter} />
-
+          <FilterBar
+            matches={matches}
+            onFilter={handleFilter}
+            participantCounts={participantCounts}
+          />
           {/* Matches list */}
           <div className="mt-8 space-y-6">
             {loading ? (

@@ -1,13 +1,7 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
 
-const EditMatchModal = ({ 
-  isOpen, 
-  onClose, 
-  match, 
-  onSubmit, 
-  isLoading 
-}) => {
+const EditMatchModal = ({ isOpen, onClose, match, onSubmit, isLoading }) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -135,14 +129,14 @@ const EditMatchModal = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-3 bg-gray-700 text-white rounded-lg font-medium hover:bg-gray-600 transition-colors"
+              className="px-6 py-3 bg-gray-700 text-white rounded-lg font-medium hover:bg-gray-600 transition-colors cursor-pointer"
             >
               Anuluj
             </button>
             <button
               type="submit"
               disabled={isLoading}
-              className="px-6 py-3 bg-violet-400 text-black rounded-lg font-medium hover:bg-violet-500 transition-colors disabled:opacity-50"
+              className="px-6 py-3 bg-violet-400 text-black rounded-lg font-medium hover:bg-violet-500 transition-colors disabled:opacity-50 cursor-pointer"
             >
               {isLoading ? "Aktualizowanie..." : "Zaktualizuj mecz"}
             </button>
