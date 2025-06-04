@@ -34,33 +34,31 @@ const SearchMatch = () => {
   const [participants, setParticipants] = useState([]);
   const [participantCounts, setParticipantCounts] = useState({});
 
-useEffect(() => {
-  const authToken = localStorage.getItem("authToken");
-  const userDetails = localStorage.getItem("user");
+  useEffect(() => {
+    const authToken = localStorage.getItem("authToken");
+    const userDetails = localStorage.getItem("user");
 
-  setToken(authToken);
+    setToken(authToken);
 
-  if (userDetails) {
-    try {
-      const user = JSON.parse(userDetails);
-      setUserId(user.id);
-      fetchAvailableMatches(user.id, authToken);
-    } catch (err) {
-      setError("Błąd przetwarzania danych użytkownika");
-      console.error("Błąd przetwarzania danych użytkownika:", err);
+    if (userDetails) {
+      try {
+        const user = JSON.parse(userDetails);
+        setUserId(user.id);
+        fetchAvailableMatches(user.id, authToken);
+      } catch (err) {
+        setError("Błąd przetwarzania danych użytkownika");
+        console.error("Błąd przetwarzania danych użytkownika:", err);
+      }
+    } else {
+      setError("Brak danych użytkownika");
     }
-  } else {
-    setError("Brak danych użytkownika");
-  }
-}, []);
+  }, []);
 
-  
   const fetchAvailableMatches = async (uid, authToken) => {
     try {
       setLoading(true);
       const availableMatches = await getAvailableMatches(uid, authToken);
 
-      
       const formattedMatches = availableMatches.map((match) => ({
         id: match.id,
         name: match.title,
@@ -78,7 +76,6 @@ useEffect(() => {
       setMatches(formattedMatches);
       setFilteredMatches(formattedMatches);
 
-      
       const counts = {};
       for (const match of formattedMatches) {
         try {
@@ -144,7 +141,6 @@ useEffect(() => {
     }
   };
 
-  
   const handleViewDetails = async (matchId) => {
     try {
       setLoading(true);
@@ -262,7 +258,7 @@ useEffect(() => {
                           DOŁĄCZ DO MECZU
                         </button>
                         <button
-                          className="flex items-center gap-1 bg-violet-900/60 hover:via-violet-700 text-white px-5 py-4 rounded-lg text-sm font-medium transition-colors cursor-pointer"
+                          className="flex items-center gap-1 bg-violet-900/60 hover:bg-violet-700/60 text-white px-5 py-4 rounded-lg text-sm font-medium transition-colors cursor-pointer"
                           onClick={() => handleViewDetails(match.id)}
                         >
                           SZCZEGÓŁY

@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import ButtonPrimary from "./ButtonPrimary";
-import ButtonSecondary from "./ButtonSecondary";
+import { useNavigate } from "react-router-dom";
 export default function AnimatedHeroSection() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const containerRef = useRef(null);
   const [grid, setGrid] = useState([]);
   const gridSize = 15;
+  const navigate = useNavigate();
   const activationRadius = 5;
 
   useEffect(() => {
@@ -101,8 +101,18 @@ export default function AnimatedHeroSection() {
           grą.
         </p>
         <div className="flex gap-5">
-          <ButtonPrimary text={"Wyszukaj mecz"} />
-          <ButtonSecondary text={"Stwórz swój mecz"} />
+          <button
+            onClick={() => navigate("/search-match")}
+            className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-6 rounded transition-colors cursor-pointer"
+          >
+            Wyszukaj mecz
+          </button>
+          <button
+            onClick={() => navigate("/create-match")}
+            className="bg-gray-700 hover:bg-gray-800 text-white font-bold py-2 px-6 rounded transition-colors cursor-pointer"
+          >
+            Stwórz swój mecz
+          </button>
         </div>
       </div>
     </div>
