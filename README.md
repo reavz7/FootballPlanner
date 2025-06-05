@@ -11,8 +11,11 @@
 
 <h4 align="center">Create, join, play matches</h4>
 
-![image](https://github.com/user-attachments/assets/fdfbe610-9402-4579-9269-a1b4c9c154a0)
-![image](https://github.com/user-attachments/assets/785b6228-2be5-45a1-b9a3-7b9aa2e4463e)
+![image](https://github.com/user-attachments/assets/c6d30b5c-1182-4458-babe-8187af6a3f02)
+![image](https://github.com/user-attachments/assets/097776b2-b92f-48a9-8a24-b8a58d794d02)
+![image](https://github.com/user-attachments/assets/51fe0403-6b79-4ac7-bfc1-8eff9f51a5b3)
+![image](https://github.com/user-attachments/assets/5c2cf221-7c6d-406b-97a0-0fe3ec11c9fa)
+![image](https://github.com/user-attachments/assets/6b3edf1f-caa0-4a22-a24b-1da4ef8cb195)
 
 ---
 
