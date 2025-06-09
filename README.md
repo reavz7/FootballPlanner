@@ -62,7 +62,6 @@ cd server -> npm install
 <br/>
 cd client -> npm install
 
-2. Start
 # Start backend
 cd server
 npm run dev
