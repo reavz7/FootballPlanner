@@ -66,10 +66,12 @@ Built using React (frontend) and Express + Sequelize (backend).
 
 # Start backend
 cd server -> npm install
+<br/>
 npm start
 
 # Start frontend (in another terminal)
 cd client -> npm install
+<br/>
 npm run dev
 
 
