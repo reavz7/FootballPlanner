@@ -58,10 +58,8 @@ Built using React (frontend) and Express + Sequelize (backend).
 1. Clone the repo:
    ```bash
    git clone https://github.com/your-username/footballplanner.git
-   cd client
-npm install
-cd ../server
-npm install
+cd server -> npm install
+cd client -> npm install
 
 2. Start
 # Start backend
