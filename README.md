@@ -62,6 +62,8 @@ cd server -> npm install
 <br/>
 cd client -> npm install
 
+# At first you need to create database named footballplanner in MySQL
+
 # Start backend
 cd server
 npm run dev
